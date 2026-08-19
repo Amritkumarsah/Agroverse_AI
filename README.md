@@ -340,7 +340,7 @@ Use these credentials to experience different user roles within the platform:
 
 ---
 
-## 13. 3-Minute Winning Demo Walkthrough Script
+## 13. 3-Minute demo Walkthrough Script
 
 Follow this step-by-step presentation script to showcase the platform to judges or teammates:
 
