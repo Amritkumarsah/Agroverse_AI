@@ -1,0 +1,109 @@
+@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
+:root {
+  --color-bg: #0a0f0d;
+  --color-card: #111a14;
+  --color-border: #1e2e23;
+}
+
+body {
+  background-color: #0a0f0d;
+  color: #f3f4f6;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0d1410;
+}
+::-webkit-scrollbar-thumb {
+  background: #1f3327;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2e4d3a;
+}
+
+/* Leaflet dark customizer */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  background: #09100c !important;
+  border-radius: 0.75rem;
+}
+.leaflet-popup-content-wrapper {
+  background: #131e17 !important;
+  color: #e5e7eb !important;
+  border: 1px solid #23362a;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+}
+.leaflet-popup-tip {
+  background: #131e17 !important;
+}
+
+/* Custom Glassmorphism Cards */
+.glass-panel {
+  background: rgba(17, 26, 20, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(46, 77, 58, 0.4);
+}
+
+.glass-panel-glow {
+  background: linear-gradient(135deg, rgba(21, 128, 61, 0.1) 0%, rgba(17, 26, 20, 0.9) 100%);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.pulse-glow {
+  box-shadow: 0 0 15px rgba(34, 197, 94, 0.3);
+}
+
+/* Light Theme Overrides */
+html.light-theme body {
+  background-color: #f1f5f3 !important;
+  color: #0f172a !important;
+}
+
+html.light-theme header, 
+html.light-theme sidebar,
+html.light-theme aside {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+}
+
+html.light-theme .bg-\[\#0a0f0d\] {
+  background-color: #f1f5f3 !important;
+}
+
+html.light-theme .bg-\[\#111a14\],
+html.light-theme .bg-\[\#131e17\],
+html.light-theme .bg-\[\#18261e\],
+html.light-theme .bg-\[\#0d1611\] {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+}
+
+html.light-theme .text-white {
+  color: #0f172a !important;
+}
+
+html.light-theme .text-gray-300,
+html.light-theme .text-gray-400 {
+  color: #475569 !important;
+}
+
+html.light-theme pre {
+  background-color: #0f172a !important;
+  color: #34d399 !important;
+}
