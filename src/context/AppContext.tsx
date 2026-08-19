@@ -78,7 +78,7 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [currentView, setCurrentView] = useState<AppView>('overview');
+  const [currentView, setCurrentView] = useState<AppView>('landing');
   const [appMode, setAppModeState] = useState<'farmer' | 'expert'>('farmer');
   const [role, setRole] = useState<UserRole>('farmer');
   const [language, setLanguageState] = useState<LanguageCode>(() => {
