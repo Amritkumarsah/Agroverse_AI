@@ -1,0 +1,398 @@
+{
+  "FARM-88219": {
+    "id": "FARM-88219",
+    "farmer": "Rajesh Kumar",
+    "location": "Muzaffarpur, Bihar",
+    "district": "Muzaffarpur",
+    "state": "Bihar",
+    "country": "India",
+    "crop": "Wheat (HD-2967)",
+    "farmSizeHectares": 2.4,
+    "healthScore": 72,
+    "coordinates": [
+      [
+        26.1209,
+        85.3647
+      ],
+      [
+        26.1245,
+        85.3652
+      ],
+      [
+        26.1241,
+        85.3698
+      ],
+      [
+        26.1202,
+        85.3692
+      ]
+    ],
+    "satellite": {
+      "ndvi": 0.71,
+      "vegetationHealth": "Healthy (Moderate Stress in NW Zone)",
+      "stressZones": 1,
+      "date": "18 Aug 2026",
+      "zones": [
+        {
+          "id": "Zone A",
+          "name": "South-East Zone",
+          "health": "healthy",
+          "ndvi": 0.78,
+          "moisture": "58%",
+          "recommendation": "Maintain standard growth schedule."
+        },
+        {
+          "id": "Zone B",
+          "name": "North-West Zone",
+          "health": "moderate",
+          "ndvi": 0.43,
+          "moisture": "42%",
+          "recommendation": "Postpone chemical spray due to rain."
+        },
+        {
+          "id": "Zone C",
+          "name": "Central Patch",
+          "health": "high-risk",
+          "ndvi": 0.35,
+          "moisture": "31%",
+          "recommendation": "Inspect for early rust infection."
+        }
+      ]
+    },
+    "weather": {
+      "currentTemp": 29,
+      "humidity": 74,
+      "rainProbability": 78,
+      "condition": "Thunderstorms Expected in 36h",
+      "irrigationAction": "Postpone Irrigation Immediately",
+      "recommendation": "78% rainfall expected within 36h. Postpone irrigation to avoid waterlogging."
+    },
+    "soil": {
+      "ph": 6.7,
+      "nitrogen": "Medium",
+      "phosphorus": "High",
+      "potassium": "Medium",
+      "organicCarbon": 0.42,
+      "moisture": 42,
+      "score": 64
+    },
+    "advisory": [
+      {
+        "cropName": "Wheat (HD-2967)",
+        "suitabilityScore": 91,
+        "waterRequirement": "Medium",
+        "reasons": [
+          "pH 6.7 aligns with optimal root absorption",
+          "Loamy alluvial soil provides good drainage"
+        ]
+      },
+      {
+        "cropName": "Chickpea (Kabuli)",
+        "suitabilityScore": 82,
+        "waterRequirement": "Low",
+        "reasons": [
+          "Low water requirement",
+          "Fixes nitrogen"
+        ]
+      }
+    ]
+  },
+  "FARM-54102": {
+    "id": "FARM-54102",
+    "farmer": "Sita Devi",
+    "location": "Thanjavur, Tamil Nadu",
+    "district": "Thanjavur",
+    "state": "Tamil Nadu",
+    "country": "India",
+    "crop": "Paddy Rice (CR-1009)",
+    "farmSizeHectares": 3.8,
+    "healthScore": 85,
+    "coordinates": [
+      [
+        10.7867,
+        79.1378
+      ],
+      [
+        10.7901,
+        79.1382
+      ],
+      [
+        10.7895,
+        79.142
+      ],
+      [
+        10.786,
+        79.1415
+      ]
+    ],
+    "satellite": {
+      "ndvi": 0.84,
+      "vegetationHealth": "Vigorous Paddy Canopy (Cauvery Delta)",
+      "stressZones": 0,
+      "date": "18 Aug 2026",
+      "zones": [
+        {
+          "id": "Zone A",
+          "name": "Delta Canal Field",
+          "health": "healthy",
+          "ndvi": 0.87,
+          "moisture": "75%",
+          "recommendation": "Maintain 5cm ponded water."
+        }
+      ]
+    },
+    "weather": {
+      "currentTemp": 32,
+      "humidity": 82,
+      "rainProbability": 25,
+      "condition": "Partly Cloudy",
+      "irrigationAction": "Proceed with Scheduled Canal Irrigation",
+      "recommendation": "Favorable condition for paddy panicle growth."
+    },
+    "soil": {
+      "ph": 7.2,
+      "nitrogen": "High",
+      "phosphorus": "Medium",
+      "potassium": "High",
+      "organicCarbon": 0.68,
+      "moisture": 72,
+      "score": 82
+    },
+    "advisory": [
+      {
+        "cropName": "Paddy Rice (CR-1009 Sub1)",
+        "suitabilityScore": 95,
+        "waterRequirement": "High",
+        "reasons": [
+          "High water retention clay soil",
+          "Rich Cauvery alluvium"
+        ]
+      }
+    ]
+  },
+  "FARM-33918": {
+    "id": "FARM-33918",
+    "farmer": "Arjun Patil",
+    "location": "Nashik, Maharashtra",
+    "district": "Nashik",
+    "state": "Maharashtra",
+    "country": "India",
+    "crop": "Sugarcane (Co 86032)",
+    "farmSizeHectares": 5,
+    "healthScore": 68,
+    "coordinates": [
+      [
+        19.9975,
+        73.7898
+      ],
+      [
+        20.001,
+        73.7905
+      ],
+      [
+        20.0002,
+        73.7945
+      ],
+      [
+        19.9968,
+        73.794
+      ]
+    ],
+    "satellite": {
+      "ndvi": 0.65,
+      "vegetationHealth": "Moderate Sugarcane Canopy",
+      "stressZones": 2,
+      "date": "18 Aug 2026",
+      "zones": [
+        {
+          "id": "Zone A",
+          "name": "Drip Block",
+          "health": "healthy",
+          "ndvi": 0.76,
+          "moisture": "52%",
+          "recommendation": "Maintain drip fertigation."
+        },
+        {
+          "id": "Zone B",
+          "name": "Furrow Block",
+          "health": "moderate",
+          "ndvi": 0.52,
+          "moisture": "36%",
+          "recommendation": "Upgrade to drip lines to curb evaporation."
+        }
+      ]
+    },
+    "weather": {
+      "currentTemp": 34,
+      "humidity": 58,
+      "rainProbability": 15,
+      "condition": "Sunny & Hot",
+      "irrigationAction": "Execute Drip Irrigation Cycle Today",
+      "recommendation": "34°C heat driving evapotranspiration. Run drip irrigation cycle for 2.5 hours."
+    },
+    "soil": {
+      "ph": 8.1,
+      "nitrogen": "Low",
+      "phosphorus": "Medium",
+      "potassium": "High",
+      "organicCarbon": 0.38,
+      "moisture": 36,
+      "score": 60
+    },
+    "advisory": [
+      {
+        "cropName": "Sugarcane (Co 86032)",
+        "suitabilityScore": 89,
+        "waterRequirement": "High",
+        "reasons": [
+          "Vertisol black cotton soil anchorage",
+          "High potassium reserves"
+        ]
+      }
+    ]
+  },
+  "FARM-10492": {
+    "id": "FARM-10492",
+    "farmer": "Harpreet Singh",
+    "location": "Ludhiana, Punjab",
+    "district": "Ludhiana",
+    "state": "Punjab",
+    "country": "India",
+    "crop": "Basmati Rice (Pusa 1121)",
+    "farmSizeHectares": 4.2,
+    "healthScore": 79,
+    "coordinates": [
+      [
+        30.901,
+        75.8573
+      ],
+      [
+        30.9045,
+        75.858
+      ],
+      [
+        30.904,
+        75.8625
+      ],
+      [
+        30.9002,
+        75.8618
+      ]
+    ],
+    "satellite": {
+      "ndvi": 0.77,
+      "vegetationHealth": "Vigorous Basmati Tillering",
+      "stressZones": 0,
+      "date": "18 Aug 2026",
+      "zones": [
+        {
+          "id": "Zone A",
+          "name": "Laser-Leveled Field A",
+          "health": "healthy",
+          "ndvi": 0.81,
+          "moisture": "65%",
+          "recommendation": "Laser leveling saved 25% water."
+        }
+      ]
+    },
+    "weather": {
+      "currentTemp": 31,
+      "humidity": 68,
+      "rainProbability": 45,
+      "condition": "Scattered Monsoon Clouds",
+      "irrigationAction": "Moderate Irrigation Needed",
+      "recommendation": "Soil moisture is 58%. Moderate rain chance (45%) tomorrow."
+    },
+    "soil": {
+      "ph": 7.4,
+      "nitrogen": "Medium",
+      "phosphorus": "High",
+      "potassium": "Medium",
+      "organicCarbon": 0.55,
+      "moisture": 58,
+      "score": 74
+    },
+    "advisory": [
+      {
+        "cropName": "Basmati Rice (Pusa 1121)",
+        "suitabilityScore": 93,
+        "waterRequirement": "Medium-High",
+        "reasons": [
+          "Punjab Indo-Gangetic silt soil ideal for aroma"
+        ]
+      }
+    ]
+  },
+  "FARM-46900": {
+    "id": "FARM-46900",
+    "farmer": "Sachin chauhan",
+    "location": "Patna",
+    "district": "Patna",
+    "state": "State",
+    "country": "India",
+    "crop": "Wheat (HD-2967)",
+    "farmSizeHectares": 2.5,
+    "healthScore": 78,
+    "coordinates": [
+      [
+        26.1209,
+        85.3647
+      ],
+      [
+        26.1239,
+        85.3647
+      ],
+      [
+        26.1239,
+        85.3677
+      ],
+      [
+        26.1209,
+        85.3677
+      ]
+    ],
+    "satellite": {
+      "ndvi": 0.73,
+      "vegetationHealth": "Healthy Canopy",
+      "stressZones": 0,
+      "date": "18 Aug 2026",
+      "zones": [
+        {
+          "id": "Zone A",
+          "name": "Main Plot",
+          "health": "healthy",
+          "ndvi": 0.75,
+          "moisture": "55%",
+          "recommendation": "Standard growth regimen."
+        }
+      ]
+    },
+    "weather": {
+      "currentTemp": 30,
+      "humidity": 70,
+      "rainProbability": 25,
+      "condition": "Partly Cloudy",
+      "irrigationAction": "Execute Standard Irrigation",
+      "recommendation": "Weather conditions favorable for active growth."
+    },
+    "soil": {
+      "ph": 6.8,
+      "nitrogen": "Medium",
+      "phosphorus": "High",
+      "potassium": "Medium",
+      "organicCarbon": 0.52,
+      "moisture": 48,
+      "score": 72
+    },
+    "advisory": [
+      {
+        "cropName": "Wheat (HD-2967)",
+        "suitabilityScore": 92,
+        "waterRequirement": "Medium",
+        "reasons": [
+          "Compatible soil & climate"
+        ]
+      }
+    ]
+  }
+}

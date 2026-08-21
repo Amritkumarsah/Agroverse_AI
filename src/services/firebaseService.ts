@@ -23,7 +23,6 @@ import {
 } from 'firebase/firestore';
 import { auth, googleProvider, db } from '../config/firebase';
 import { FarmerProfile, UserRole } from '../types';
-import { googleAuthEngine } from './googleAuthEngine';
 
 export interface UserProfileData {
   uid: string;
@@ -152,14 +151,7 @@ export class FirebaseService {
     await sendPasswordResetEmail(auth, email);
   }
 
-  /**
-   * Real Firebase Google OAuth Sign-In (Pure signInWithPopup & Strict Firestore Agent Authorization)
-   * Prompt 'select_account' forces the Google Account Chooser screen.
-   * Authentication != Authorization: Unregistered Google accounts are REJECTED and signed out.
-   */
-  async signInWithGoogle(role: UserRole = 'farmer'): Promise<UserProfileData> {
-    return await googleAuthEngine.signInWithGoogle(role);
-  }
+
 
   /**
    * Get user profile details from Firestore or Auth object with Authorization Check
