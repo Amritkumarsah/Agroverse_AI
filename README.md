@@ -12,13 +12,27 @@
 [![Google Gemini AI](https://img.shields.io/badge/Google_Gemini-1.5_Flash-4285F4.svg?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE)
 [![DPI Standard](https://img.shields.io/badge/DPI_Standard-JSON--LD_v2.4-blue.svg?style=for-the-badge)](#7-brics-common-agriculture-data-schema-json-ld-v24)
-[![UN SDGs](https://img.shields.io/badge/UN_SDGs-2_%7C_13_%7C_17-E5243B.svg?style=for-the-badge)](#15-digital-public-good-dpg--un-sdg-alignment)
+[![UN SDGs](https://img.shields.io/badge/UN_SDGs-2_%7C_13_%7C_17-E5243B.svg?style=for-the-badge)](#14-digital-public-good-dpg--un-sdg-alignment)
 
-[🚀 Live Demo](#11-quickstart-setup-guide-run-in-2-minutes) • [🎥 Walkthrough Script](#13-3-minute-winning-demo-walkthrough-script) • [🌐 BRICS Schema](#7-brics-common-agriculture-data-schema-json-ld-v24) • [🏛️ Authority Dashboard](#4-key-features--module-catalog) • [📖 Documentation](#3-system-architecture)
+[🚀 Quickstart (2 Mins)](#11-quickstart-setup-guide-run-in-2-minutes) • [🎥 3-Min Winning Pitch Script](#13-3-minute-winning-demo-walkthrough-script) • [🏆 Judge Evaluation Rubric](#-judges-quick-evaluation-matrix) • [🌐 BRICS Schema](#7-brics-common-agriculture-data-schema-json-ld-v24) • [🏛️ Authority Dashboard](#4-key-features--module-catalog)
 
 ---
 
 </div>
+
+## 🏆 Judge's Quick Evaluation Matrix
+
+> **Evaluator's Note:** Short on time? Here is how **AGROVERSE AI** addresses every core judging criterion:
+
+| Judging Criterion | How AGROVERSE AI Solves & Wins | Key Module / Metric |
+| :--- | :--- | :--- |
+| **💡 Innovation & Originality** | Replaces expensive $1,000+ IoT hardware with **100% remote sensing** (Sentinel-2 + Open-Meteo) & Multimodal Generative AI. | [Section 6](#6-hardware-independence--remote-sensing) |
+| **🤖 AI Technical Depth** | **Google Gemini 1.5 Flash** integrated with Computer Vision leaf diagnosis, XAI (Explainable AI), and a zero-downtime offline fallback engine. | [Section 5](#5-ai-decision-engine--google-gemini-integration) |
+| **🌐 DPI & Interoperability** | Implements the **BRICS Common Agriculture Data Schema (JSON-LD v2.4)** for cross-border AI model exchange across 5 nations. | [Section 7](#7-brics-common-agriculture-data-schema-json-ld-v24) |
+| **🌍 Real-World Impact** | Accessible to 500M+ smallholders via **Voice-First multilingual AgroGPT** and dual Farmer/Authority dashboards. | [Section 4](#4-key-features--module-catalog) |
+| **✨ UI/UX & Production Quality** | Glassmorphism Dark/Light themes, 3D Plot Digital Twins, real-time GPS Geolocation, and sub-second rendering. | [Section 8](#8-tech-stack--architecture-blueprint) |
+
+---
 
 ## 📌 Table of Contents
 
@@ -43,29 +57,33 @@
 
 ## 1. Overview & Problem Statement
 
-Global agriculture faces an unprecedented, compounding crisis driven by environmental instability, operational isolation, and technological barriers:
+Global agriculture is confronting an unprecedented, compounding crisis driven by climate shocks, technological isolation, and fragmented data systems:
 
-* 📉 **Climate Volatility & Yield Shock**: Unpredictable weather events, unseasonal rainfall, prolonged heatwaves, and sudden droughts devastate crop yields and destabilize farm livelihoods.
-* 🔬 **Siloed Agricultural Telemetry**: Satellite imagery, edaphic soil science, local weather forecasts, market pricing, and pest outbreak telemetry exist in disconnected data silos.
-* 🗣️ **Accessibility & Language Barriers**: Over 500 million smallholder farmers—who produce ~80% of food in emerging economies—lack localized, voice-assisted advisories in their native dialects.
-* 🌐 **Cross-Border AI Model Fragmentation**: High-value predictive models (drought risk, pest spread, crop yield) developed in one region cannot easily be shared or adapted across borders due to proprietary, non-interoperable data formats.
+* 📉 **Climate Volatility & Yield Loss**: Unseasonal deluges, prolonged heat domes, and sudden droughts devastate crop yields and smallholder livelihoods.
+* 🔬 **Siloed Agricultural Telemetry**: Satellite imagery, soil science, weather radar, and pest outbreak telemetry live in isolated, incompatible platforms.
+* 🗣️ **Accessibility & Language Barriers**: Over 500 million smallholder farmers—who produce ~80% of food in emerging economies—lack localized, voice-guided advisories in their mother tongues.
+* 🌐 **Cross-Border AI Fragmentation**: High-value predictive models (drought risk, pathogen spread, yield forecasting) developed in one country cannot be shared or adapted across borders due to proprietary, locked formats.
 
 ---
 
 ## 2. Why AGROVERSE AI? (Core Innovation)
 
-**AGROVERSE AI (AgriNexus)** is an open, interoperable **Digital Public Infrastructure (DPI)** designed to democratize high-resolution satellite remote sensing, edaphic soil diagnostics, computer vision leaf pathology, and multimodal generative AI (**Google Gemini**) into **actionable, voice-guided farm advisories**.
+**AGROVERSE AI (AgriNexus)** is an open, interoperable **Digital Public Infrastructure (DPI)** designed to transform high-resolution satellite remote sensing, edaphic soil diagnostics, computer vision leaf pathology, and multimodal generative AI (**Google Gemini**) into **actionable, voice-guided farm decisions**.
 
-### 🌟 Key Innovation Pillars & Value Proposition
+### 🌟 Traditional Farm Tech vs. AGROVERSE AI
 
-| Dimension | Traditional Farm Technology | **AGROVERSE AI (AgriNexus)** |
-| :--- | :--- | :--- |
-| **Hardware Dependence** | Requires expensive on-field IoT soil sensors ($1,000+ per plot) | **100% Hardware-Independent** via Sentinel-2 Satellite Remote Sensing & Open-Meteo telemetry |
-| **AI Advisory Model** | Static lookup tables or black-box predictions | **Multimodal Google Gemini 1.5 Flash** with Explainable AI (XAI) & localized fallback rules |
-| **User Accessibility** | Complex tabular portals requiring high digital literacy | **Voice-First AgroGPT** supporting native regional languages (English, Hindi, etc.) |
-| **Data Interoperability** | Proprietary JSON schemas isolated per vendor | **BRICS Common Data Schema (JSON-LD v2.4)** for cross-border AI model exchange |
-| **Macro Surveillance** | Delayed paper-based regional government reporting | **National Crop Risk Monitor** tracking 128,420+ farms in real-time with outbreak heatmaps |
-| **Farm Spatial Insight** | Static 2D satellite maps | **Interactive 3D Farm Digital Twin** with granular spatial zonal health diagnostics |
+```
+┌───────────────────────────┬───────────────────────────────────┬──────────────────────────────────────────┐
+│ Dimension                 │ Traditional AgTech Systems        │ 🌾 AGROVERSE AI (AgriNexus)              │
+├───────────────────────────┼───────────────────────────────────┼──────────────────────────────────────────┤
+│ 🔌 Hardware Dependence    │ $1,000+ per-plot IoT field probes │ 100% Hardware-Free (Sentinel-2 Remote)   │
+│ 🤖 Advisory Intelligence  │ Static rule tables / Black-box    │ Multimodal Google Gemini + XAI Reasoning │
+│ 🗣️ Farmer Interface       │ Complex tabular desktop portals   │ Voice-First AgroGPT in Native Dialects   │
+│ 🌐 Data Exchange Standard │ Closed, vendor-locked JSON        │ BRICS Common Schema (JSON-LD v2.4)       │
+│ 🏛️ Macro Surveillance     │ Delayed paper district reports    │ National Risk Monitor (128k+ Live Farms) │
+│ 🧊 Spatial Visualization  │ Flat 2D satellite screenshots     │ Interactive 3D Farm Digital Twin         │
+└───────────────────────────┴───────────────────────────────────┴──────────────────────────────────────────┘
+```
 
 ---
 
@@ -78,15 +96,15 @@ Global agriculture faces an unprecedented, compounding crisis driven by environm
         ▲                         ▲                         ▲                      ▲
         │                         │                         │                      │
 ┌───────────────┐        ┌──────────────────┐      ┌─────────────────┐   ┌──────────────────┐
-│ Sentinel-2    │        │ Weather API      │      │ Soil Telemetry  │   │ Leaf CV Model    │
+│ Sentinel-2    │        │ Weather Radar    │      │ Soil Telemetry  │   │ Leaf Pathology   │
 │ Multispectral │        │ (Live Open-Meteo)│      │ Lab Spectrum    │   │ Computer Vision  │
 └───────────────┘        └──────────────────┘      └─────────────────┘   └──────────────────┘
         │                         │                         │                      │
         └─────────────────────────┴───────────┬─────────────┴──────────────────────┘
                                               ▼
                                ┌───────────────────────────────┐
-                               │  Google Gemini 1.5 Flash      │
-                               │  & AI Feature Fusion Engine   │
+                               │   Google Gemini 1.5 Flash     │
+                               │   & AI Feature Fusion Engine  │
                                └───────────────┬───────────────┘
                                                │
                         ┌──────────────────────┴─────────────────────┐
@@ -104,7 +122,7 @@ Global agriculture faces an unprecedented, compounding crisis driven by environm
                                └───────────────┬───────────────┘
                                                ▼
                                ┌───────────────────────────────┐
-                               │ ⚡ Firebase & Server Sync     │
+                               │ ⚡ Firebase & Local State Sync │
                                │ (Auth, State & Telemetry API) │
                                └───────────────────────────────┘
 ```
@@ -113,7 +131,7 @@ Global agriculture faces an unprecedented, compounding crisis driven by environm
 
 ## 4. Key Features & Module Catalog
 
-AGROVERSE AI features **27 modular components** organized into four functional hubs:
+AGROVERSE AI features **27 integrated components** organized into four functional pillars:
 
 ### 🌾 1. Farmer Intelligence Hub
 * 📊 **Farm Overview Dashboard**: Computes aggregate Farm Health Scores (0-100) dynamically across Crop, Soil, Weather, Disease, and Sustainability sub-indices.
@@ -148,18 +166,18 @@ AGROVERSE AI features **27 modular components** organized into four functional h
 AGROVERSE AI utilizes **Google Gemini 1.5 Flash** for natural language advisory synthesis, yield explanations, and crop selection reasoning:
 
 ```typescript
-// Architectural Flow of Google Gemini Integration
+// Architectural Flow of Google Gemini Integration (src/services/googleAiService.ts)
 User Query / Sensor Telemetry
        │
        ▼
-GoogleAiService (src/services/googleAiService.ts)
-       ├── 1. Validate API Configuration (GEMINI_API_KEY)
-       ├── 2. Build Structured Prompt (Farmer Context + Soil + Satellite + Weather)
+GoogleAiService
+       ├── 1. Validate API Configuration (VITE_GEMINI_API_KEY)
+       ├── 2. Build Structured Prompt (Farmer Profile + Soil NPK + Sentinel NDVI + Microclimate)
        ├── 3. API Call -> https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent
-       └── 4. [Fallback] High-Fidelity Local Rule Engine (guarantees offline availability)
+       └── 4. [Fail-Safe] High-Fidelity Local Rule Engine (guarantees 100% offline availability)
 ```
 
-### AI System Highlights:
+### 🧠 Core AI System Highlights:
 1. **Explainable AI (XAI)**: Provides explicit reasoning behind every recommendation (e.g., *"Postpone irrigation because 45mm rain is expected within 36 hours"*).
 2. **Multimodal Pathology**: Analyzes leaf images alongside microclimate data to diagnose plant diseases accurately.
 3. **High-Fidelity Offline Fallback Engine**: If internet connection is unavailable or no API key is provided, the platform seamlessly runs a deterministic local rule-based expert engine.
@@ -174,15 +192,6 @@ AGROVERSE AI is engineered around a **hardware-independent architecture**. It op
 - **Global Edaphic Datasets**: Soil texture, organic carbon %, and pH data.
 
 Standardized telemetry webhooks allow physical IoT sensors or drone payload data to be ingested smoothly whenever available.
-
-```typescript
-// Satellite Data Abstraction Layer (src/services/satelliteService.ts)
-SatelliteDataProvider
-    ├── getImagery(polygonCoords, date)
-    ├── getNDVI(polygonCoords, date)
-    ├── getVegetationHealth(polygonCoords)
-    └── getStressZones(polygonCoords)
-```
 
 ---
 
@@ -280,7 +289,7 @@ Agrinexsus/
     │   │   ├── ActionPlan.tsx            # 7-Day Weather-aware checklist
     │   │   ├── AgroGPT.tsx               # Voice-first Gemini conversational AI
     │   │   ├── AlertCenter.tsx           # Outbreak & weather alert dispatcher
-    │   │   ├── AuthModal.tsx             # Authentication modal
+    │   │   ├── AuthModal.tsx             # Authentication modal (Sign In & Sign Up)
     │   │   ├── AuthorityDashboard.tsx    # 128k Monitored Farms Macro Monitor
     │   │   ├── BRICSNetwork.tsx          # Cross-border JSON-LD Model Exchange
     │   │   ├── CalendarModal.tsx         # Crop calendar modal
@@ -305,7 +314,7 @@ Agrinexsus/
     │   │   ├── WeatherIntel.tsx          # Open-Meteo microclimate radar
     │   │   └── YieldForecast.tsx         # Predictive yield estimation engine
     │   ├── demo/               # Hackathon quick pitch controls
-    │   ├── layout/             # Header, Navigation bar, and Sidebar
+    │   ├── layout/             # Topbar, Header, Navigation bar, and Sidebar
     │   ├── maps/               # Leaflet GIS interactive map components
     │   └── ui/                 # Reusable UI primitives (Cards, Buttons, Modals, Badges)
     ├── context/                # Global React state (Auth, Language, Farm Context)
@@ -358,13 +367,9 @@ VITE_FIREBASE_PROJECT_ID=your_project_id
 VITE_FIREBASE_STORAGE_BUCKET=your_project_id.appspot.com
 VITE_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
 VITE_FIREBASE_APP_ID=your_app_id
-
-# Satellite & Remote Sensing Integration Keys (Optional)
-# VITE_SENTINEL_HUB_CLIENT_ID=your_sentinel_client_id
-# VITE_OPENWEATHER_API_KEY=your_openweather_api_key
 ```
 
-> 💡 **Built-in Offline Engine**: AGROVERSE AI includes a deterministic local expert engine. The application functions completely out of the box even without external API keys.
+> 💡 **Deterministic Offline Mode**: AGROVERSE AI includes a robust deterministic local rule engine. The entire application runs seamlessly with full advisory capabilities even without external API keys.
 
 ---
 
@@ -397,18 +402,15 @@ cp .env.example .env
 ### Step 4: Run Application
 
 #### Option A: Concurrent Development (Recommended)
-
-Terminal 1 — Start Express Backend API (Port 5000):
 ```bash
+# Terminal 1: Backend Express Server (Port 5000)
 npm run server
-```
 
-Terminal 2 — Start Vite Frontend App (Port 5173):
-```bash
+# Terminal 2: Vite Frontend App (Port 5173)
 npm run dev
 ```
 
-#### Option B: Build & Run Production Bundle
+#### Option B: Production Build & Preview
 ```bash
 npm run build
 npm run preview
@@ -416,19 +418,20 @@ npm run preview
 
 ### Step 5: Open Application
 Open your browser and navigate to:  
-👉 **`http://localhost:5173`**
+👉 **`http://localhost:5173`** (or `http://localhost:4173` in preview mode)
 
 ---
 
 ## 12. Demo Credentials & User Roles (For Judges)
 
-Use these credentials to experience different user roles within the platform:
+Use these quick options or test accounts to explore the full platform:
 
-| Role | Email | Password | Key Features to Test |
+| Option / Role | Identifier / Email | Password | What Judges Will See |
 | :--- | :--- | :--- | :--- |
-| 👨‍🌾 **Farmer Mode** | `farmer@agroverse.demo` | `demo123` | AgroGPT Voice AI, 7-Day Checklist, AI Disease Doctor, 3D Digital Twin, Soil Health. |
-| 🏛️ **Agricultural Authority** | `authority@agroverse.demo` | `demo123` | National Crop Risk Monitor, 128k Monitored Farms Heatmap, Disaster Relief Dispatch. |
-| 🔬 **Researcher Mode** | `researcher@agroverse.demo` | `demo123` | BRICS Model Exchange (JSON-LD v2.4), Climate Scenario Simulator, Technical Architecture. |
+| ⚡ **Instant Demo 1** | *Click "Rajesh Kumar"* | *No password required* | Muzaffarpur, Bihar (Wheat HD-2967) with full Satellite NDVI & Disease Doctor telemetry. |
+| ⚡ **Instant Demo 2** | *Click "Amrit Kumar Sah"* | *No password required* | Sriperumbudur, Tamil Nadu with live weather radar, 3D Digital Twin, and 7-Day Checklist. |
+| 🏛️ **Authority View** | Topbar Role -> Authority | — | National Crop Risk Monitor tracking **128,420+ farms** across regional sectors. |
+| 🔬 **Researcher View**| Topbar Role -> Researcher | — | BRICS JSON-LD v2.4 Model Exchange and Climate Scenario Simulation engine. |
 
 ---
 
@@ -436,42 +439,44 @@ Use these credentials to experience different user roles within the platform:
 
 Follow this step-by-step presentation script when showcasing **AGROVERSE AI** to judges or evaluators:
 
-1. **0:00 - 0:30 (Farmer Overview)**:
-   * Open `http://localhost:5173`. Select **Rajesh Kumar** (*Muzaffarpur, Bihar | Wheat HD-2967 | 2.4 Ha*).
-   * Point out the aggregate **Farm Health Score (72/100)** and individual sub-indices (Crop: 78, Weather: 71, Disease: 82).
-2. **0:30 - 1:00 (Satellite & Weather Telemetry)**:
-   * Navigate to **Satellite Intel**. Toggle Sentinel-2 NDVI overlay. Highlight **Zone B (North-West Plot)** showing vegetation stress ($NDVI = 0.43$).
-   * Click **Weather Intel**. Point out 78% precipitation probability and the AI-driven recommendation: *"Postpone irrigation — 45mm rain expected within 36 hours."*
-3. **1:00 - 1:30 (AI Pathology & AgroGPT Voice)**:
-   * Open **Disease Doctor**. Upload/capture leaf photo. Highlight instantaneous Computer Vision classification: **Wheat Rust (91% confidence)** with organic treatment steps.
-   * Open **AgroGPT**. Ask via voice/text: *"When is the optimal harvest window for my wheat plot?"* Observe Google Gemini 1.5 Flash response.
+1. **0:00 - 0:30 (Farmer Overview & DPI Philosophy)**:
+   * Open the app and click **Instant Demo Access**.
+   * Highlight the **Hardware-Independent DPI Philosophy**: No costly IoT soil probes required.
+   * Point out the aggregate **Farm Health Score (72/100)** computed dynamically across 5 real-time indices.
+2. **0:30 - 1:00 (Sentinel-2 Satellite & Weather Radar)**:
+   * Navigate to **Satellite Intel**. Toggle Sentinel-2 NDVI overlay. Highlight **Zone B** showing early canopy stress ($NDVI = 0.43$).
+   * Click **Weather Intel**. Show live Open-Meteo telemetry turning rain probability (78%) into actionable advice: *"Postpone irrigation — 45mm rain expected."*
+3. **1:00 - 1:30 (AI Disease Doctor & Voice AgroGPT)**:
+   * Open **Disease Doctor**. Upload a sample leaf photo. Highlight instantaneous Computer Vision classification: **Wheat Rust (91% confidence)** with dual organic and chemical remedy protocols.
+   * Open **AgroGPT**. Speak or type a question in Hindi or English: *"When should I harvest my wheat crop?"* Observe the **Google Gemini 1.5 Flash** advisory with XAI reasoning.
 4. **1:30 - 2:15 (Yield Analytics & Climate Simulator)**:
    * Open **Yield Forecast**. Show multi-variable yield estimation (4.2 Tons/Ha) and net profit projections.
    * Click **Climate Simulator**. Adjust temperature delta to $+2^\circ\text{C}$ and demonstrate yield stress modeling.
 5. **2:15 - 3:00 (National Authority & BRICS Exchange)**:
    * Switch role to **Authority Mode**. Demonstrate the **National Crop Risk Monitor** tracking **128,420 farms** and regional disaster heatmaps.
-   * Navigate to **BRICS Network**. Trigger model sharing from India $\rightarrow$ Brazil using the **JSON-LD v2.4 Schema**.
+   * Navigate to **BRICS Network**. Trigger cross-border model sharing from India $\rightarrow$ Brazil using the **JSON-LD v2.4 Schema**.
 
 ---
 
 ## 14. Digital Public Good (DPG) & UN SDG Alignment
 
-AGROVERSE AI is built in alignment with **Digital Public Goods Alliance (DPGA)** standards and supports the United Nations Sustainable Development Goals:
-
-* 🌾 **SDG 2: Zero Hunger**: Enhancing crop yields and resilience for smallholder farmers.
-* 🌍 **SDG 13: Climate Action**: Providing predictive climate modeling, water conservation, and soil carbon tracking.
-* 🤝 **SDG 17: Partnerships for the Goals**: Facilitating cross-border AI model interoperability across BRICS nations.
+AGROVERSE AI is built in strict alignment with **Digital Public Goods Alliance (DPGA)** standards and directly advances the United Nations Sustainable Development Goals:
 
 ```text
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                       DPG & DPI GUARANTEES                              │
+│                       DPG & DPI CORE GUARANTEES                         │
 ├─────────────────────────────────────────────────────────────────────────┤
 │  🔓 Open Data Standards     : BRICS JSON-LD v2.4 Machine-Readable       │
 │  🔍 Explainable AI (XAI)    : Human-Verifiable Rationale for Decisions  │
 │  🛡️ Data Sovereignty       : Granular Farmer Consent Management         │
 │  🌐 Hardware Independence   : Zero Mandatory Field Sensor Lock-in       │
+│  📱 Universal Accessibility : Multilingual Voice AI in Native Dialects  │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
+
+* 🌾 **SDG 2: Zero Hunger**: Enhancing crop yields and resilience for smallholder farmers.
+* 🌍 **SDG 13: Climate Action**: Providing predictive climate modeling, water conservation, and soil carbon tracking.
+* 🤝 **SDG 17: Partnerships for the Goals**: Facilitating cross-border AI model interoperability across BRICS nations.
 
 ---
 
