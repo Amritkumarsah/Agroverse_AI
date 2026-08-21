@@ -46,10 +46,11 @@ export class FirebaseService {
     role: UserRole = 'farmer',
     avatarUrl?: string
   ): Promise<UserProfileData> {
+    console.log('[AUTH DEBUG] SIGNUP START');
     console.log('[AUTH DEBUG] createUserWithEmailAndPassword started');
     const userCred = await createUserWithEmailAndPassword(auth, email, pass);
     const user = userCred.user;
-    console.log('[AUTH DEBUG] Firebase signup success', { uid: user.uid, email: user.email });
+    console.log('[AUTH DEBUG] FIREBASE SIGNUP SUCCESS', { uid: user.uid, email: user.email });
 
     try {
       await updateProfile(user, {
@@ -58,16 +59,12 @@ export class FirebaseService {
       });
     } catch (e) {}
 
+    console.log('[AUTH DEBUG] VERIFICATION EMAIL START');
     try {
-      console.log('[AUTH DEBUG] sendEmailVerification started');
-      const actionCodeSettings = {
-        url: window.location.origin || 'http://localhost:5173',
-        handleCodeInApp: false
-      };
-      await sendEmailVerification(user, actionCodeSettings);
-      console.log('[AUTH DEBUG] sendEmailVerification success');
-    } catch (e) {
-      console.warn('[AUTH DEBUG] sendEmailVerification error notice:', e);
+      await sendEmailVerification(user);
+      console.log('[AUTH DEBUG] VERIFICATION EMAIL SUCCESS');
+    } catch (e: any) {
+      console.error('[AUTH DEBUG] VERIFICATION EMAIL ERROR:', e?.code || e?.message || e);
     }
 
     const profileData: UserProfileData = {
@@ -80,8 +77,9 @@ export class FirebaseService {
       emailVerified: user.emailVerified
     };
 
-    // Persist user profile to Firestore database
+    console.log('[AUTH DEBUG] PROFILE CREATION START');
     await setDoc(doc(db, 'users', profileData.uid), profileData, { merge: true });
+    console.log('[AUTH DEBUG] PROFILE CREATION SUCCESS');
 
     return profileData;
   }
@@ -92,11 +90,7 @@ export class FirebaseService {
   async resendVerificationEmail(): Promise<void> {
     if (auth.currentUser) {
       console.log('[AUTH DEBUG] resendVerificationEmail started');
-      const actionCodeSettings = {
-        url: window.location.origin || 'http://localhost:5173',
-        handleCodeInApp: false
-      };
-      await sendEmailVerification(auth.currentUser, actionCodeSettings);
+      await sendEmailVerification(auth.currentUser);
       console.log('[AUTH DEBUG] resendVerificationEmail success');
     } else {
       throw new Error('No user signed in to resend verification email.');
@@ -155,26 +149,32 @@ export class FirebaseService {
 
   /**
    * Real Firebase Google OAuth Sign-In (Pure signInWithPopup & Strict Firestore Agent Authorization)
-   * The Google popup stays open naturally until the user selects an account or cancels.
+   * Prompt 'select_account' forces the Google Account Chooser screen.
    * Authentication != Authorization: Unregistered Google accounts are REJECTED and signed out.
    */
   async signInWithGoogle(role: UserRole = 'farmer'): Promise<UserProfileData> {
-    console.log('[AUTH DEBUG] signInWithGoogle started');
-    console.log('[AUTH DEBUG] signInWithPopup started', new Date().toISOString());
+    console.log('[AUTH DEBUG] GOOGLE BUTTON');
+    console.log('[AUTH DEBUG] GOOGLE SIGNIN START');
+    console.log('[AUTH DEBUG] POPUP START', new Date().toISOString());
     googleProvider.setCustomParameters({ prompt: 'select_account' });
     
     // Execute real Firebase Auth OAuth popup with explicit Google Account Chooser
-    const result = await signInWithPopup(auth, googleProvider);
-    const user = result.user;
+    let user: FirebaseUser;
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      user = result.user;
+      console.log('[AUTH DEBUG] POPUP SUCCESS', {
+        uid: user.uid,
+        email: user.email,
+        emailVerified: user.emailVerified
+      });
+    } catch (err: any) {
+      console.error('[AUTH DEBUG] POPUP ERROR:', err?.code || err?.message || err);
+      throw err;
+    }
 
-    console.log('[AUTH DEBUG] Google popup success', {
-      uid: user.uid,
-      email: user.email,
-      emailVerified: user.emailVerified
-    });
-
-    // STEP 2: Strict Application Authorization Check against Cloud Firestore
-    console.log('[AUTH DEBUG] Firestore authorization started');
+    // STEP 2: Strict UID-based Application Authorization Check against Cloud Firestore
+    console.log('[AUTH DEBUG] FIRESTORE AUTHORIZATION START for UID:', user.uid);
     let profileData: UserProfileData | null = null;
     try {
       const userDocRef = doc(db, 'users', user.uid);
@@ -185,38 +185,25 @@ export class FirebaseService {
         profileData.role = role || profileData.role || 'farmer';
         profileData.emailVerified = true;
         
-        // Sync role if requested
         try {
           await setDoc(userDocRef, { role: profileData.role, emailVerified: true }, { merge: true });
         } catch (e) {}
-      } else if (user.email) {
-        // Query by email in case account was registered with email
-        const usersRef = collection(db, 'users');
-        const q = query(usersRef, where('email', '==', user.email));
-        const querySnap = await getDocs(q);
-
-        if (!querySnap.empty) {
-          const matchedDoc = querySnap.docs[0];
-          profileData = matchedDoc.data() as UserProfileData;
-          profileData.role = role || profileData.role || 'farmer';
-          profileData.emailVerified = true;
-        }
       }
     } catch (e) {
-      console.warn('Firestore authorization lookup warning:', e);
+      console.warn('[AUTH DEBUG] Firestore authorization lookup warning:', e);
     }
 
     // IF UNREGISTERED IN AGENT DATABASE -> DENY ACCESS & SIGN OUT IMMEDIATELY
     if (!profileData) {
-      console.log('[AUTH DEBUG] Firestore authorization result: DENIED');
+      console.log('[AUTH DEBUG] FIRESTORE AUTHORIZATION RESULT: DENIED');
       console.log('[AUTH DEBUG] Executing Firebase signOut() and blocking dashboard redirect');
       await signOut(auth);
-      const authErr: any = new Error('Your Google account is not registered as an Agent. Please register first or contact the administrator.');
+      const authErr: any = new Error('Access Denied: Your Google account is not registered as an Agent. Please register first under "Register New Agent" tab.');
       authErr.code = 'auth/unregistered-agent';
       throw authErr;
     }
 
-    console.log('[AUTH DEBUG] Firestore authorization result: AUTHORIZED');
+    console.log('[AUTH DEBUG] FIRESTORE AUTHORIZATION RESULT: AUTHORIZED');
     return profileData;
   }
 
@@ -237,18 +224,6 @@ export class FirebaseService {
           } catch {}
         }
         return data;
-      }
-
-      // Check by email query
-      if (user.email) {
-        const usersRef = collection(db, 'users');
-        const q = query(usersRef, where('email', '==', user.email));
-        const querySnap = await getDocs(q);
-        if (!querySnap.empty) {
-          const data = querySnap.docs[0].data() as UserProfileData;
-          data.emailVerified = user.emailVerified;
-          return data;
-        }
       }
     } catch (e) {
       console.warn('Could not fetch user document from Firestore:', e);

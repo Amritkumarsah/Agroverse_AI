@@ -152,27 +152,29 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (fbUser) => {
+      console.log('[AUTH DEBUG] AUTH STATE CHANGED:', fbUser ? { uid: fbUser.uid, email: fbUser.email, emailVerified: fbUser.emailVerified } : 'NULL');
       if (fbUser) {
-        // Fetch profile from Firestore if available
-        const profile = await firebaseService.getUserProfile(fbUser, role);
+        const profile = await firebaseService.getUserProfile(fbUser);
         if (profile) {
+          console.log('[AUTH DEBUG] CURRENT USER STATE: AUTHORIZED PROFILE FOUND', profile.uid);
           setCurrentUser(profile);
           if (profile.role) {
             setRole(profile.role);
           }
         } else {
-          // Fallback basic user profile for newly created or active Firebase user
+          console.log('[AUTH DEBUG] CURRENT USER STATE: NO FIRESTORE PROFILE FOR UID', fbUser.uid);
           setCurrentUser({
             uid: fbUser.uid,
             email: fbUser.email,
             displayName: fbUser.displayName || fbUser.email?.split('@')[0] || 'AgriUser',
             photoURL: fbUser.photoURL,
-            role: role || 'farmer',
+            role: 'farmer',
             createdAt: new Date().toISOString(),
             emailVerified: fbUser.emailVerified
           });
         }
       } else {
+        console.log('[AUTH DEBUG] CURRENT USER STATE: NULL');
         setCurrentUser(null);
       }
     });
@@ -185,7 +187,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }).catch(e => console.warn('Firestore initial sync note:', e));
 
     return () => unsubscribe();
-  }, [role]);
+  }, []);
 
   const logout = async () => {
     try {

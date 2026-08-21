@@ -172,17 +172,15 @@ export const AuthModal: React.FC<Props> = ({
   const handleGoogleSignIn = async (e?: React.MouseEvent) => {
     if (e) {
       e.preventDefault();
-      e.stopPropagation();
     }
-    console.log('[GOOGLE AUTH] signInWithPopup CALLED', new Date().toISOString());
-    console.log('[AUTH] Google button clicked');
+    console.log('[AUTH DEBUG] GOOGLE BUTTON');
+    console.log('[AUTH DEBUG] GOOGLE SIGNIN START');
     setIsAuthLoading(true);
     try {
       const profile = await firebaseService.signInWithGoogle(selectedRole);
       
-      console.log('[AUTH] Dashboard redirect: ALLOWING ACCESS for', profile.displayName);
+      console.log('[AUTH DEBUG] DASHBOARD ACCESS: AUTHORIZED for', profile.displayName);
 
-      // Auto-assign existing farm matching Google account name
       if (profile?.displayName) {
         const existingFarm = farms.find(f => f.name.toLowerCase() === profile.displayName?.toLowerCase());
         if (existingFarm) {
@@ -195,11 +193,11 @@ export const AuthModal: React.FC<Props> = ({
       showToast(`Welcome ${profile?.displayName || 'Agent'}! Authenticated & Authorized.`, 'success');
       onClose();
     } catch (err: any) {
-      console.error('[AUTH] Google Auth Error:', err);
-      console.log('[AUTH] Dashboard redirect: BLOCKED');
+      console.error('[AUTH DEBUG] Google Auth Error:', err);
+      console.log('[AUTH DEBUG] DASHBOARD ACCESS: BLOCKED');
       
       if (err.code === 'auth/unregistered-agent' || err.message?.includes('not registered')) {
-        showToast('Access Denied: Your Google account is not registered as an Agent. Please register first under "Register New Farmer" tab.', 'error');
+        showToast('Access Denied: Your Google account is not registered as an Agent. Please register first under "Register New Agent" tab.', 'error');
       } else if (err.code === 'auth/popup-closed-by-user') {
         showToast('Google sign-in was cancelled.', 'info');
       } else if (err.code === 'auth/popup-blocked') {
@@ -256,6 +254,7 @@ export const AuthModal: React.FC<Props> = ({
     }
 
     setIsAuthLoading(true);
+    console.log('[AUTH DEBUG] SIGNUP BUTTON CLICKED');
     try {
       const emailToUse = signupEmail.trim();
       const pwdToUse = signupPassword.trim();
@@ -274,11 +273,11 @@ export const AuthModal: React.FC<Props> = ({
 
       setRole('farmer');
 
-      // ALWAYS show the Gmail Verification Required screen upon signup
+      console.log('[AUTH DEBUG] VERIFICATION UI OPEN');
       setVerificationSentEmail(emailToUse);
       showToast(`Verification link sent to ${emailToUse}! Please verify your Gmail.`, 'info');
     } catch (err: any) {
-      console.error('Firebase Sign Up Error:', err);
+      console.error('[AUTH DEBUG] Firebase Sign Up Error:', err);
       let errMsg = err.message || 'Registration failed';
       if (err.code === 'auth/email-already-in-use') {
         errMsg = 'This Gmail address is already registered. Please sign in under "Sign In / Existing Account" tab.';
@@ -391,7 +390,7 @@ export const AuthModal: React.FC<Props> = ({
                 )}
               </button>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+              <div className="grid grid-cols-2 gap-2.5">
                 <button
                   type="button"
                   onClick={async () => {
@@ -406,29 +405,7 @@ export const AuthModal: React.FC<Props> = ({
                     theme === 'light' ? 'bg-slate-100 hover:bg-slate-200 border-slate-300 text-slate-800' : 'bg-[#142219] hover:bg-[#1a2d21] border-[#233c2a] text-emerald-400'
                   }`}
                 >
-                  Resend Link 🔄
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    setCurrentUser(prev => ({
-                      uid: prev?.uid || `user-${Date.now()}`,
-                      email: prev?.email || verificationSentEmail || 'farmer@agrinexsus.ai',
-                      displayName: prev?.displayName || signupName || 'Farmer Agent',
-                      photoURL: prev?.photoURL || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200',
-                      role: prev?.role || 'farmer',
-                      createdAt: prev?.createdAt || new Date().toISOString(),
-                      emailVerified: true
-                    }));
-                    showToast('Gmail address verified! Access granted to AGROVERSE AI Dashboard.', 'success');
-                    setCurrentView('overview');
-                    setVerificationSentEmail(null);
-                    onClose();
-                  }}
-                  className="py-2.5 px-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold text-[11px] shadow-md transition-all cursor-pointer truncate"
-                >
-                  Instant Verify 🚀
+                  Resend Email Link 🔄
                 </button>
 
                 <button
