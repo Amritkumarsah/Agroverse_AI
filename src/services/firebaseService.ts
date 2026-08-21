@@ -157,71 +157,30 @@ export class FirebaseService {
    * Authentication != Authorization: Unregistered Google accounts are REJECTED and signed out.
    */
   async signInWithGoogle(role: UserRole = 'farmer'): Promise<UserProfileData> {
-    console.log('[AUTH DEBUG] GOOGLE BUTTON CLICKED');
-    console.log('[AUTH DEBUG] GOOGLE SIGNIN START');
+    console.log('[AUTH DEBUG] Executing pure Firebase signInWithPopup(auth, googleProvider)...');
     googleProvider.setCustomParameters({ prompt: 'select_account' });
     
-    // Execute real Firebase Auth OAuth popup with fallback
-    let user: FirebaseUser | null = null;
-    try {
-      const result = await signInWithPopup(auth, googleProvider);
-      user = result.user;
-      console.log('[AUTH DEBUG] POPUP SUCCESS', {
-        uid: user.uid,
-        email: user.email,
-        emailVerified: user.emailVerified
-      });
-    } catch (err: any) {
-      console.warn('[AUTH DEBUG] Firebase Google Popup notice:', err?.code || err?.message);
-      if (err?.code === 'auth/popup-closed-by-user') {
-        throw err;
-      }
-      // Fallback Google profile if domain unauthorized or popup blocked by browser
-      return {
-        uid: `google-user-${Date.now()}`,
-        email: 'google.farmer@agrinexsus.ai',
-        displayName: 'Google Verified Farmer',
-        photoURL: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200',
-        role: role || 'farmer',
-        createdAt: new Date().toISOString(),
-        emailVerified: true
-      };
-    }
+    // Execute real Firebase Auth OAuth popup with Google Account Chooser
+    const result = await signInWithPopup(auth, googleProvider);
+    const user = result.user;
+    
+    console.log('[AUTH DEBUG] Firebase Google Auth Success for UID:', user.uid, user.email);
 
     // Lookup existing profile or auto-provision profile in Cloud Firestore
     let profileData: UserProfileData | null = null;
-    if (user) {
-      try {
-        const userDocRef = doc(db, 'users', user.uid);
-        const docSnap = await getDoc(userDocRef);
+    try {
+      const userDocRef = doc(db, 'users', user.uid);
+      const docSnap = await getDoc(userDocRef);
 
-        if (docSnap.exists()) {
-          profileData = docSnap.data() as UserProfileData;
-          profileData.role = role || profileData.role || 'farmer';
-          profileData.emailVerified = true;
-          try {
-            await setDoc(userDocRef, { role: profileData.role, emailVerified: true }, { merge: true });
-          } catch (e) {}
-        } else {
-          // Auto-provision new Google User profile in Firestore
-          profileData = {
-            uid: user.uid,
-            email: user.email,
-            displayName: user.displayName || user.email?.split('@')[0] || 'Google User',
-            photoURL: user.photoURL || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200',
-            role: role || 'farmer',
-            createdAt: new Date().toISOString(),
-            emailVerified: true
-          };
-          try {
-            await setDoc(userDocRef, profileData, { merge: true });
-            console.log('[AUTH DEBUG] FIRESTORE PROFILE CREATED FOR NEW GOOGLE USER:', user.uid);
-          } catch (e) {
-            console.warn('[AUTH DEBUG] Firestore profile save warning for new Google user:', e);
-          }
-        }
-      } catch (e) {
-        console.warn('[AUTH DEBUG] Firestore lookup error, creating memory profile:', e);
+      if (docSnap.exists()) {
+        profileData = docSnap.data() as UserProfileData;
+        profileData.role = role || profileData.role || 'farmer';
+        profileData.emailVerified = true;
+        try {
+          await setDoc(userDocRef, { role: profileData.role, emailVerified: true }, { merge: true });
+        } catch (e) {}
+      } else {
+        // Auto-provision new Google User profile in Firestore
         profileData = {
           uid: user.uid,
           email: user.email,
@@ -231,18 +190,27 @@ export class FirebaseService {
           createdAt: new Date().toISOString(),
           emailVerified: true
         };
+        try {
+          await setDoc(userDocRef, profileData, { merge: true });
+          console.log('[AUTH DEBUG] FIRESTORE PROFILE CREATED FOR GOOGLE USER:', user.uid);
+        } catch (e) {
+          console.warn('[AUTH DEBUG] Firestore profile save warning:', e);
+        }
       }
+    } catch (e) {
+      console.warn('[AUTH DEBUG] Firestore lookup error, returning user from Auth token:', e);
+      profileData = {
+        uid: user.uid,
+        email: user.email,
+        displayName: user.displayName || user.email?.split('@')[0] || 'Google User',
+        photoURL: user.photoURL || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200',
+        role: role || 'farmer',
+        createdAt: new Date().toISOString(),
+        emailVerified: true
+      };
     }
 
-    return profileData || {
-      uid: `google-user-${Date.now()}`,
-      email: 'google.farmer@agrinexsus.ai',
-      displayName: 'Google Verified Farmer',
-      photoURL: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200',
-      role: role || 'farmer',
-      createdAt: new Date().toISOString(),
-      emailVerified: true
-    };
+    return profileData;
   }
 
   /**

@@ -22,7 +22,6 @@ import {
 } from 'lucide-react';
 import { reverseGeocodeCity } from '../../utils/geoUtils';
 import { firebaseService, UserProfileData } from '../../services/firebaseService';
-import { GoogleAuthModal } from './GoogleAuthModal';
 
 const PRESET_AVATARS = [
   'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200',
@@ -167,26 +166,45 @@ export const AuthModal: React.FC<Props> = ({
     }
   };
 
-  const handleGoogleSignIn = (e?: React.MouseEvent) => {
+  const handleGoogleSignIn = async (e?: React.MouseEvent) => {
     if (e) {
       e.preventDefault();
+      e.stopPropagation();
     }
-    setIsGoogleModalOpen(true);
-  };
-
-  const handleGoogleAccountSelected = (profile: UserProfileData) => {
-    setIsGoogleModalOpen(false);
-    if (profile?.displayName) {
-      const existingFarm = farms.find(f => f.name.toLowerCase() === profile.displayName?.toLowerCase());
-      if (existingFarm) {
-        setSelectedFarmId(existingFarm.id);
+    setIsAuthLoading(true);
+    console.log('[AUTH DEBUG] Executing real Firebase signInWithPopup(auth, googleProvider)...');
+    try {
+      const profile = await firebaseService.signInWithGoogle(selectedRole);
+      
+      if (profile?.displayName) {
+        const existingFarm = farms.find(f => f.name.toLowerCase() === profile.displayName?.toLowerCase());
+        if (existingFarm) {
+          setSelectedFarmId(existingFarm.id);
+        }
       }
+
+      setRole(selectedRole);
+      setCurrentUser(profile);
+      setCurrentView('overview');
+      showToast(`Welcome ${profile?.displayName || profile?.email}! Authenticated with Google.`, 'success');
+      onClose();
+    } catch (err: any) {
+      console.error('[AUTH DEBUG] Real Google Auth Error:', err);
+      if (err.code === 'auth/popup-closed-by-user') {
+        showToast('Google Sign-In popup was closed.', 'info');
+      } else if (err.code === 'auth/popup-blocked') {
+        showToast('Browser blocked Google popup. Please allow popups for localhost:5173 and try again.', 'error');
+      } else if (err.code === 'auth/unauthorized-domain') {
+        showToast('Firebase Notice: Domain unauthorized. Add "localhost" under Firebase Console -> Authentication -> Authorized Domains.', 'error');
+      } else if (err.code === 'auth/operation-not-allowed') {
+        showToast('Google Sign-In is not enabled in your Firebase Console under Authentication -> Sign-in method.', 'error');
+      } else {
+        const errMsg = err.message || err.code || 'Google sign-in failed.';
+        showToast(`Google Auth Notice: ${errMsg}`, 'error');
+      }
+    } finally {
+      setIsAuthLoading(false);
     }
-    setRole(selectedRole);
-    setCurrentUser(profile);
-    setCurrentView('overview');
-    showToast(`Welcome ${profile.displayName}! Signed in with Google.`, 'success');
-    onClose();
   };
 
   const handleQuickDemoLogin = (farmId?: string, roleType: 'farmer' | 'authority' | 'researcher' = 'farmer') => {
@@ -891,14 +909,6 @@ export const AuthModal: React.FC<Props> = ({
             </form>
           </Modal>
         )}
-
-        {/* Google OAuth Account Chooser Modal */}
-        <GoogleAuthModal
-          isOpen={isGoogleModalOpen}
-          onClose={() => setIsGoogleModalOpen(false)}
-          onSelectAccount={handleGoogleAccountSelected}
-          selectedRole={selectedRole}
-        />
       </div>
     </Modal>
   );
