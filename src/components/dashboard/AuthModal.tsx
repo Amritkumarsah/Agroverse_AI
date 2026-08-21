@@ -197,20 +197,23 @@ export const AuthModal: React.FC<Props> = ({
     }
   };
 
-  const handleQuickDemoLogin = (farmId?: string, roleType: 'farmer' | 'authority' | 'researcher' = 'farmer') => {
+  const handleQuickDemoLogin = (farmId?: string, roleType: 'farmer' | 'authority' | 'researcher' = 'farmer', farmerName?: string, farmerPhoto?: string, farmerEmail?: string) => {
     if (farmId) setSelectedFarmId(farmId);
     setRole(roleType);
+    const displayName = farmerName || (roleType === 'authority' ? 'Dr. Ananya Sharma' : 'Rajesh Kumar');
+    const photoURL = farmerPhoto || (roleType === 'authority' ? 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=200' : 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200');
+    const email = farmerEmail || (roleType === 'authority' ? 'authority@agrinexsus.ai' : 'rajesh.kumar@agrinexsus.ai');
     setCurrentUser({
       uid: farmId || `demo-${Date.now()}`,
-      email: roleType === 'authority' ? 'authority@agrinexsus.ai' : 'rajesh.kumar@agrinexsus.ai',
-      displayName: roleType === 'authority' ? 'Dr. Ananya Sharma' : 'Rajesh Kumar',
-      photoURL: roleType === 'authority' ? 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=200' : 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200',
+      email,
+      displayName,
+      photoURL,
       role: roleType,
       createdAt: new Date().toISOString(),
       emailVerified: true
     });
     setCurrentView('overview');
-    showToast(`Quick Demo Access granted as ${roleType === 'authority' ? 'Dr. Ananya' : 'Rajesh Kumar'}!`, 'success');
+    showToast(`✅ Welcome, ${displayName}! Dashboard opened.`, 'success');
     onClose();
   };
 
@@ -606,7 +609,13 @@ export const AuthModal: React.FC<Props> = ({
 
                     <button
                       type="button"
-                      onClick={() => handleQuickDemoLogin(farms[0]?.id, 'farmer')}
+                      onClick={() => handleQuickDemoLogin(
+                        farms[0]?.id,
+                        'farmer',
+                        farms[0]?.name,
+                        farms[0]?.avatarUrl,
+                        `${(farms[0]?.name || 'farmer').toLowerCase().replace(/\s+/g, '.')}@agrinexsus.ai`
+                      )}
                       className={`p-2.5 rounded-xl border text-left flex items-center space-x-3 group transition-all cursor-pointer ${
                         theme === 'light' 
                           ? 'bg-slate-50 hover:bg-emerald-50/80 border-slate-200 shadow-sm' 
@@ -616,7 +625,7 @@ export const AuthModal: React.FC<Props> = ({
                       <img 
                         src={farms[0]?.avatarUrl || PRESET_AVATARS[0]} 
                         className="w-9 h-9 rounded-full object-cover border border-emerald-500 group-hover:scale-105 transition-transform shrink-0" 
-                        alt="Active" 
+                        alt={farms[0]?.name || 'Farmer'} 
                       />
                       <div className="min-w-0 flex-1">
                         <div className={`font-extrabold text-xs truncate transition-colors ${

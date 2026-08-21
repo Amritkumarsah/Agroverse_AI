@@ -325,15 +325,14 @@ export const Topbar: React.FC<TopbarProps> = ({
               <div className={`absolute right-0 mt-2 w-80 rounded-3xl shadow-2xl z-50 p-4 animate-fadeIn text-xs space-y-4 border ${
                 theme === 'light' ? 'bg-white border-slate-200 text-slate-900' : 'bg-[#111a14] border-[#23362a] text-white'
               }`}>
-                {/* Signed-In User Profile Card */}
-                <div className={`border p-3.5 rounded-2xl space-y-3 ${
+                {/* Signed-In User Profile Card — shows ONLY login info */}
+                <div className={`border p-4 rounded-2xl space-y-3 ${
                   theme === 'light' ? 'bg-emerald-50/50 border-emerald-300/60 text-slate-900' : 'bg-[#18261e] border-emerald-500/50 text-white'
                 }`}>
-                  {/* User Identity — from sign-in */}
                   <div className="flex items-center gap-3">
                     <div className="relative shrink-0">
                       <img
-                        src={currentUser.photoURL || selectedFarm.avatarUrl}
+                        src={currentUser.photoURL || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200'}
                         alt={currentUser.displayName || 'User'}
                         className="w-14 h-14 rounded-full object-cover border-2 border-emerald-500 shadow-md"
                       />
@@ -346,7 +345,7 @@ export const Topbar: React.FC<TopbarProps> = ({
                       <div className={`text-[10px] truncate mt-0.5 ${theme === 'light' ? 'text-slate-500' : 'text-gray-400'}`}>
                         {currentUser.email || 'demo@agrinexsus.ai'}
                       </div>
-                      <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
+                      <div className="flex items-center gap-1.5 mt-2 flex-wrap">
                         <span className={`text-[9px] font-extrabold border px-2 py-0.5 rounded-full uppercase tracking-wider ${
                           theme === 'light' ? 'bg-emerald-100 text-emerald-800 border-emerald-300' : 'bg-emerald-950 text-emerald-400 border-emerald-800'
                         }`}>
@@ -362,93 +361,7 @@ export const Topbar: React.FC<TopbarProps> = ({
                       </div>
                     </div>
                   </div>
-
-                  {/* Active Farm Info — below user identity */}
-                  <div className={`pt-2.5 border-t ${theme === 'light' ? 'border-emerald-200' : 'border-emerald-800/50'}`}>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="flex items-center gap-1.5 text-[10px] uppercase font-extrabold text-emerald-600 tracking-wider">
-                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                        <span>Active Farm Parcel</span>
-                      </span>
-                      <div className="flex items-center space-x-1">
-                        <button
-                          onClick={() => {
-                            if (!navigator.geolocation) {
-                              showToast('Browser Geolocation is not supported', 'error');
-                              return;
-                            }
-                            showToast('Detecting GPS location...', 'info');
-                            navigator.geolocation.getCurrentPosition(
-                              async (pos) => {
-                                const lat = parseFloat(pos.coords.latitude.toFixed(4));
-                                const lng = parseFloat(pos.coords.longitude.toFixed(4));
-                                const resolvedLocation = await reverseGeocodeCity(lat, lng);
-                                addNewFarm({
-                                  farmer: currentUser.displayName || 'My Farm',
-                                  location: resolvedLocation,
-                                  latitude: lat,
-                                  longitude: lng,
-                                  farmSizeHectares: 2.0,
-                                  crop: 'Local Vegetables / Wheat'
-                                });
-                                setShowProfileDropdown(false);
-                                showToast(`Location: ${resolvedLocation}!`, 'success');
-                              },
-                              (err) => { showToast(`Location error: ${err.message}`, 'error'); },
-                              { enableHighAccuracy: true, timeout: 10000 }
-                            );
-                          }}
-                          className={`p-1 px-2 border rounded-lg transition-colors flex items-center gap-1 text-[10px] font-bold ${
-                            theme === 'light' ? 'bg-emerald-100 hover:bg-emerald-200 border-emerald-300 text-emerald-800' : 'bg-emerald-950 hover:bg-emerald-900 border-emerald-800/80 text-emerald-300'
-                          }`}
-                        >
-                          <span>📍 GPS</span>
-                        </button>
-                        <button
-                          onClick={() => { setEditingFarm(selectedFarm); setShowProfileDropdown(false); }}
-                          className={`p-1 px-2 border rounded-lg transition-colors flex items-center gap-1 text-[10px] font-bold ${
-                            theme === 'light' ? 'bg-emerald-100 hover:bg-emerald-200 border-emerald-300 text-emerald-800' : 'bg-emerald-950 hover:bg-emerald-900 border-emerald-800/80 text-emerald-300'
-                          }`}
-                        >
-                          <Edit2 className="w-3 h-3" /><span>Edit</span>
-                        </button>
-                        {farms.length > 1 && (
-                          <button
-                            onClick={() => deleteExistingFarm(selectedFarm.id)}
-                            className={`p-1 px-1.5 rounded-lg transition-colors border ${
-                              theme === 'light' ? 'bg-red-100 hover:bg-red-200 border-red-200 text-red-700' : 'bg-red-950/40 hover:bg-red-900/60 border-red-800/40 text-red-400'
-                            }`}
-                          >
-                            <Trash2 className="w-3 h-3" />
-                          </button>
-                        )}
-                      </div>
-                    </div>
-
-                  <div className="flex items-center space-x-3">
-                    <img src={selectedFarm.avatarUrl} alt={selectedFarm.name} className="w-10 h-10 rounded-full object-cover border-2 border-emerald-500 shadow-md shrink-0" />
-                    <div className="min-w-0 flex-1">
-                      <div className={`font-extrabold text-xs truncate ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>{selectedFarm.name}</div>
-                      <div className="text-[10px] text-emerald-600 font-semibold flex items-center gap-1 mt-0.5">
-                        <MapPin className="w-3 h-3 shrink-0" />
-                        <span className="truncate">{selectedFarm.location}</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 mt-1 flex-wrap">
-                        <span className={`text-[9px] font-bold border px-2 py-0.5 rounded-full ${
-                          theme === 'light' ? 'bg-emerald-100 text-emerald-800 border-emerald-300' : 'bg-emerald-950 text-emerald-300 border-emerald-800'
-                        }`}>
-                          {selectedFarm.crop}
-                        </span>
-                        <span className={`text-[9px] border px-2 py-0.5 rounded-full font-mono ${
-                          theme === 'light' ? 'bg-slate-100 text-slate-700 border-slate-300' : 'bg-gray-900 text-gray-300 border-gray-700'
-                        }`}>
-                          {selectedFarm.farmSizeHectares} Ha
-                        </span>
-                       </div>
-                     </div>
-                   </div>
-                  </div>{/* end Active Farm Info */}
-                </div>{/* end profile card */}
+                </div>
 
                 {/* Other Farm Parcels (ONLY shown if other farms exist) */}
                 {farms.filter(f => f.id !== selectedFarmId).length > 0 && (
