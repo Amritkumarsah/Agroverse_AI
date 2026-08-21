@@ -508,8 +508,22 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setFarms(prev => [newFarmerProfile, ...prev]);
     setSelectedFarmId(newId);
 
-    // Save to Firebase Firestore
+    // Save to Firebase Firestore & Express Backend API
     firebaseService.saveFarmToFirestore(newFarmerProfile);
+    try {
+      fetch('http://localhost:5000/api/farms', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          farmer: farmData.farmer,
+          location: farmData.location,
+          latitude: lat,
+          longitude: lng,
+          farmSizeHectares: farmData.farmSizeHectares,
+          crop: farmData.crop
+        })
+      }).catch(err => console.warn('Express Backend API farm sync note:', err));
+    } catch (e) {}
 
     showToast(`Created new farm parcel for ${farmData.farmer} (${farmData.location})`, 'success');
   };

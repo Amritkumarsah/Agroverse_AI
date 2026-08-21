@@ -275,36 +275,53 @@ export const Topbar: React.FC<TopbarProps> = ({
 
           {/* Unified Profile & Active Farm Hub Dropdown */}
           <div className="relative pl-1">
-            <button
-              onClick={() => setShowProfileDropdown(!showProfileDropdown)}
-              className="flex items-center space-x-2 bg-[#111a14] hover:bg-[#18261e] border border-[#23362a] hover:border-emerald-500/50 rounded-2xl p-1.5 pr-3 transition-all shadow-md group cursor-pointer"
-              title="Profile, Farm Selector & Settings"
-            >
-              <div className="relative shrink-0">
-                <img
-                  src={selectedFarm.avatarUrl}
-                  alt={selectedFarm.name}
-                  className="w-9 h-9 rounded-full object-cover border-2 border-emerald-500 group-hover:border-emerald-400 transition-colors shadow-sm"
-                />
-                {weatherSource === 'live' && (
-                  <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-400 border border-black animate-pulse" title="Live Weather Stream Active" />
-                )}
-              </div>
-
-              <div className="text-left text-xs hidden sm:block">
-                <div className="font-bold text-white flex items-center gap-1.5">
-                  <span className="truncate max-w-[130px]">{selectedFarm.name}</span>
+            {currentUser === null ? (
+              <button
+                type="button"
+                onClick={() => {
+                  setAuthTab('login');
+                  setIsAuthModalOpen(true);
+                }}
+                className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white font-extrabold text-xs shadow-md flex items-center space-x-1.5 transition-all cursor-pointer"
+              >
+                <LogIn className="w-3.5 h-3.5" />
+                <span>Sign In / Register</span>
+              </button>
+            ) : (
+              <button
+                onClick={() => setShowProfileDropdown(!showProfileDropdown)}
+                className="flex items-center space-x-2 bg-[#111a14] hover:bg-[#18261e] border border-[#23362a] hover:border-emerald-500/50 rounded-2xl p-1.5 pr-3 transition-all shadow-md group cursor-pointer"
+                title="Profile, Farm Selector & Settings"
+              >
+                <div className="relative shrink-0">
+                  <img
+                    src={currentUser.photoURL || selectedFarm.avatarUrl}
+                    alt={currentUser.displayName || selectedFarm.name}
+                    className="w-9 h-9 rounded-full object-cover border-2 border-emerald-500 group-hover:border-emerald-400 transition-colors shadow-sm"
+                  />
+                  {weatherSource === 'live' && (
+                    <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-400 border border-black animate-pulse" title="Live Weather Stream Active" />
+                  )}
                 </div>
-                <div className="text-[10px] text-gray-400 flex items-center gap-1">
-                  <MapPin className="w-3 h-3 text-emerald-400 shrink-0 inline" />
-                  <span className="truncate max-w-[140px]">{selectedFarm.location}</span>
+
+                <div className="text-left text-xs hidden sm:block">
+                  <div className="font-bold text-white flex items-center gap-1.5">
+                    <span className="truncate max-w-[130px]">{currentUser.displayName || selectedFarm.name}</span>
+                    <span className="text-[9px] bg-emerald-950 text-emerald-400 border border-emerald-800 px-1.5 py-0.2 rounded font-extrabold uppercase">
+                      {role}
+                    </span>
+                  </div>
+                  <div className="text-[10px] text-gray-400 flex items-center gap-1">
+                    <MapPin className="w-3 h-3 text-emerald-400 shrink-0 inline" />
+                    <span className="truncate max-w-[140px]">{selectedFarm.location}</span>
+                  </div>
                 </div>
-              </div>
 
-              <ChevronDown className="w-4 h-4 text-emerald-400 shrink-0 ml-0.5" />
-            </button>
+                <ChevronDown className="w-4 h-4 text-emerald-400 shrink-0 ml-0.5" />
+              </button>
+            )}
 
-            {showProfileDropdown && (
+            {showProfileDropdown && currentUser !== null && (
               <div className={`absolute right-0 mt-2 w-80 rounded-3xl shadow-2xl z-50 p-4 animate-fadeIn text-xs space-y-4 border ${
                 theme === 'light' ? 'bg-white border-slate-200 text-slate-900' : 'bg-[#111a14] border-[#23362a] text-white'
               }`}>
