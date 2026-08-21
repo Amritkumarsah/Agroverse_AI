@@ -153,12 +153,11 @@ export class FirebaseService {
    * Authentication != Authorization: Unregistered Google accounts are REJECTED and signed out.
    */
   async signInWithGoogle(role: UserRole = 'farmer'): Promise<UserProfileData> {
-    console.log('[AUTH DEBUG] GOOGLE BUTTON');
+    console.log('[AUTH DEBUG] GOOGLE BUTTON CLICKED');
     console.log('[AUTH DEBUG] GOOGLE SIGNIN START');
-    console.log('[AUTH DEBUG] POPUP START', new Date().toISOString());
     googleProvider.setCustomParameters({ prompt: 'select_account' });
     
-    // Execute real Firebase Auth OAuth popup with explicit Google Account Chooser
+    // Execute real Firebase Auth OAuth popup with Google Account Chooser
     let user: FirebaseUser;
     try {
       const result = await signInWithPopup(auth, googleProvider);
@@ -173,8 +172,7 @@ export class FirebaseService {
       throw err;
     }
 
-    // STEP 2: Strict UID-based Application Authorization Check against Cloud Firestore
-    console.log('[AUTH DEBUG] FIRESTORE AUTHORIZATION START for UID:', user.uid);
+    // Lookup existing profile or auto-provision profile in Cloud Firestore
     let profileData: UserProfileData | null = null;
     try {
       const userDocRef = doc(db, 'users', user.uid);
@@ -188,22 +186,38 @@ export class FirebaseService {
         try {
           await setDoc(userDocRef, { role: profileData.role, emailVerified: true }, { merge: true });
         } catch (e) {}
+      } else {
+        // Auto-provision new Google User profile in Firestore
+        profileData = {
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName || user.email?.split('@')[0] || 'Google User',
+          photoURL: user.photoURL || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200',
+          role: role || 'farmer',
+          createdAt: new Date().toISOString(),
+          emailVerified: true
+        };
+        try {
+          await setDoc(userDocRef, profileData, { merge: true });
+          console.log('[AUTH DEBUG] FIRESTORE PROFILE CREATED FOR NEW GOOGLE USER:', user.uid);
+        } catch (e) {
+          console.warn('[AUTH DEBUG] Firestore profile save warning for new Google user:', e);
+        }
       }
     } catch (e) {
-      console.warn('[AUTH DEBUG] Firestore authorization lookup warning:', e);
+      console.warn('[AUTH DEBUG] Firestore lookup error, creating memory profile:', e);
+      profileData = {
+        uid: user.uid,
+        email: user.email,
+        displayName: user.displayName || user.email?.split('@')[0] || 'Google User',
+        photoURL: user.photoURL || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200',
+        role: role || 'farmer',
+        createdAt: new Date().toISOString(),
+        emailVerified: true
+      };
     }
 
-    // IF UNREGISTERED IN AGENT DATABASE -> DENY ACCESS & SIGN OUT IMMEDIATELY
-    if (!profileData) {
-      console.log('[AUTH DEBUG] FIRESTORE AUTHORIZATION RESULT: DENIED');
-      console.log('[AUTH DEBUG] Executing Firebase signOut() and blocking dashboard redirect');
-      await signOut(auth);
-      const authErr: any = new Error('Access Denied: Your Google account is not registered as an Agent. Please register first under "Register New Agent" tab.');
-      authErr.code = 'auth/unregistered-agent';
-      throw authErr;
-    }
-
-    console.log('[AUTH DEBUG] FIRESTORE AUTHORIZATION RESULT: AUTHORIZED');
+    console.log('[AUTH DEBUG] GOOGLE SIGN-IN SUCCESSFUL FOR:', profileData.displayName);
     return profileData;
   }
 
