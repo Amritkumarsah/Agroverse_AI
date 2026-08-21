@@ -15,11 +15,9 @@ import {
   Navigation,
   Loader2,
   ArrowRight,
-  Sprout,
   Eye,
   EyeOff,
   Mail,
-  Building2,
   Wheat,
   Maximize2
 } from 'lucide-react';
@@ -53,7 +51,6 @@ export const AuthModal: React.FC<Props> = ({
   const [loginIdentifier, setLoginIdentifier] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [showLoginPassword, setShowLoginPassword] = useState(false);
-  const [selectedRole] = useState<'farmer' | 'authority' | 'researcher'>('farmer');
 
   // Sign Up Form State
   const [signupName, setSignupName] = useState('');
@@ -143,8 +140,8 @@ export const AuthModal: React.FC<Props> = ({
       const emailToUse = loginIdentifier.trim();
       const pwdToUse = loginPassword.trim();
 
-      const profile = await firebaseService.signInWithEmail(emailToUse, pwdToUse, selectedRole);
-      setRole(selectedRole);
+      const profile = await firebaseService.signInWithEmail(emailToUse, pwdToUse, 'farmer');
+      setRole('farmer');
 
       setCurrentUser(profile);
       setCurrentView('overview');
