@@ -889,8 +889,3 @@ export const AuthModal: React.FC<Props> = ({
     </Modal>
   );
 };
-       )}
-      </div>
-    </Modal>
-  );
-};
