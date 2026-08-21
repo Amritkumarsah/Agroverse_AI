@@ -394,5 +394,77 @@
         ]
       }
     ]
+  },
+  "FARM-65618": {
+    "id": "FARM-65618",
+    "farmer": "vikram",
+    "location": "sah",
+    "district": "sah",
+    "state": "State",
+    "country": "India",
+    "crop": "Wheat (HD-2967)",
+    "farmSizeHectares": 2.5,
+    "healthScore": 78,
+    "coordinates": [
+      [
+        26.1209,
+        85.3647
+      ],
+      [
+        26.1239,
+        85.3647
+      ],
+      [
+        26.1239,
+        85.3677
+      ],
+      [
+        26.1209,
+        85.3677
+      ]
+    ],
+    "satellite": {
+      "ndvi": 0.73,
+      "vegetationHealth": "Healthy Canopy",
+      "stressZones": 0,
+      "date": "18 Aug 2026",
+      "zones": [
+        {
+          "id": "Zone A",
+          "name": "Main Plot",
+          "health": "healthy",
+          "ndvi": 0.75,
+          "moisture": "55%",
+          "recommendation": "Standard growth regimen."
+        }
+      ]
+    },
+    "weather": {
+      "currentTemp": 30,
+      "humidity": 70,
+      "rainProbability": 25,
+      "condition": "Partly Cloudy",
+      "irrigationAction": "Execute Standard Irrigation",
+      "recommendation": "Weather conditions favorable for active growth."
+    },
+    "soil": {
+      "ph": 6.8,
+      "nitrogen": "Medium",
+      "phosphorus": "High",
+      "potassium": "Medium",
+      "organicCarbon": 0.52,
+      "moisture": 48,
+      "score": 72
+    },
+    "advisory": [
+      {
+        "cropName": "Wheat (HD-2967)",
+        "suitabilityScore": 92,
+        "waterRequirement": "Medium",
+        "reasons": [
+          "Compatible soil & climate"
+        ]
+      }
+    ]
   }
 }
