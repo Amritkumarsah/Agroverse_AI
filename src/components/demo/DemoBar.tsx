@@ -50,13 +50,7 @@ const DEMO_STEPS: DemoStepConfig[] = [
   },
   {
     step: 7,
-    title: "7. 🌱 Regenerative Agriculture Engine",
-    subtitle: "Sustainability Score 63/100 → Soil organic carbon, legume rotation & minimum tillage.",
-    view: 'regenerative'
-  },
-  {
-    step: 8,
-    title: "8. 🏛️ National Crop Risk Monitor",
+    title: "7. 🏛️ National Crop Risk Monitor",
     subtitle: "Authority Dashboard tracking 128,420 farms, drought risk & regional alerts.",
     view: 'authority'
   },

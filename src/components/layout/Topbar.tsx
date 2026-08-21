@@ -61,6 +61,7 @@ export const Topbar: React.FC<TopbarProps> = ({
     weatherSource,
     theme,
     toggleTheme,
+    currentUser,
     logout
   } = useApp();
 
@@ -304,12 +305,16 @@ export const Topbar: React.FC<TopbarProps> = ({
             </button>
 
             {showProfileDropdown && (
-              <div className="absolute right-0 mt-2 w-80 bg-[#111a14] border border-[#23362a] rounded-3xl shadow-2xl z-50 p-4 animate-fadeIn text-xs space-y-4">
+              <div className={`absolute right-0 mt-2 w-80 rounded-3xl shadow-2xl z-50 p-4 animate-fadeIn text-xs space-y-4 border ${
+                theme === 'light' ? 'bg-white border-slate-200 text-slate-900' : 'bg-[#111a14] border-[#23362a] text-white'
+              }`}>
                 {/* Active Profile Header Card */}
-                <div className="bg-[#18261e] border border-emerald-500/50 p-3.5 rounded-2xl space-y-2.5">
-                  <div className="flex items-center justify-between text-[10px] uppercase font-extrabold text-emerald-400 tracking-wider">
+                <div className={`border p-3.5 rounded-2xl space-y-2.5 ${
+                  theme === 'light' ? 'bg-emerald-50/50 border-emerald-300/60 text-slate-900' : 'bg-[#18261e] border-emerald-500/50 text-white'
+                }`}>
+                  <div className="flex items-center justify-between text-[10px] uppercase font-extrabold text-emerald-600 tracking-wider">
                     <span className="flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                       <span>Active Farm Parcel</span>
                     </span>
                     <div className="flex items-center space-x-1">
@@ -343,7 +348,11 @@ export const Topbar: React.FC<TopbarProps> = ({
                             { enableHighAccuracy: true, timeout: 10000 }
                           );
                         }}
-                        className="p-1 px-2 text-emerald-300 hover:text-white bg-emerald-950 hover:bg-emerald-900 border border-emerald-800/80 rounded-lg transition-colors flex items-center gap-1 text-[10px] font-bold"
+                        className={`p-1 px-2 border rounded-lg transition-colors flex items-center gap-1 text-[10px] font-bold ${
+                          theme === 'light' 
+                            ? 'bg-emerald-100 hover:bg-emerald-200 border-emerald-300 text-emerald-800' 
+                            : 'bg-emerald-950 hover:bg-emerald-900 border-emerald-800/80 text-emerald-300'
+                        }`}
                         title="Detect Laptop Geolocation & Fetch Live Weather"
                       >
                         <span>📍 GPS</span>
@@ -354,7 +363,11 @@ export const Topbar: React.FC<TopbarProps> = ({
                           setEditingFarm(selectedFarm);
                           setShowProfileDropdown(false);
                         }}
-                        className="p-1 px-2 text-emerald-300 hover:text-white bg-emerald-950 hover:bg-emerald-900 border border-emerald-800/80 rounded-lg transition-colors flex items-center gap-1 text-[10px] font-bold"
+                        className={`p-1 px-2 border rounded-lg transition-colors flex items-center gap-1 text-[10px] font-bold ${
+                          theme === 'light' 
+                            ? 'bg-emerald-100 hover:bg-emerald-200 border-emerald-300 text-emerald-800' 
+                            : 'bg-emerald-950 hover:bg-emerald-900 border-emerald-800/80 text-emerald-300'
+                        }`}
                         title="Edit Farm Profile & Photo"
                       >
                         <Edit2 className="w-3 h-3" />
@@ -366,7 +379,11 @@ export const Topbar: React.FC<TopbarProps> = ({
                           onClick={() => {
                             deleteExistingFarm(selectedFarm.id);
                           }}
-                          className="p-1 px-1.5 text-red-400 hover:text-red-200 bg-red-950/40 hover:bg-red-900/60 border border-red-800/40 rounded-lg transition-colors"
+                          className={`p-1 px-1.5 rounded-lg transition-colors border ${
+                            theme === 'light' 
+                              ? 'bg-red-100 hover:bg-red-200 border-red-200 text-red-700' 
+                              : 'bg-red-950/40 hover:bg-red-900/60 border-red-800/40 text-red-400'
+                          }`}
                           title="Delete Active Farm"
                         >
                           <Trash2 className="w-3 h-3" />
@@ -376,18 +393,22 @@ export const Topbar: React.FC<TopbarProps> = ({
                   </div>
 
                   <div className="flex items-center space-x-3 pt-0.5">
-                    <img src={selectedFarm.avatarUrl} alt={selectedFarm.name} className="w-12 h-12 rounded-full object-cover border-2 border-emerald-400 shadow-md shrink-0" />
+                    <img src={selectedFarm.avatarUrl} alt={selectedFarm.name} className="w-12 h-12 rounded-full object-cover border-2 border-emerald-500 shadow-md shrink-0" />
                     <div className="min-w-0 flex-1">
-                      <div className="font-extrabold text-white text-sm truncate">{selectedFarm.name}</div>
-                      <div className="text-[10px] text-emerald-400 font-semibold flex items-center gap-1 mt-0.5">
+                      <div className={`font-extrabold text-sm truncate ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>{selectedFarm.name}</div>
+                      <div className="text-[10px] text-emerald-600 font-semibold flex items-center gap-1 mt-0.5">
                         <MapPin className="w-3 h-3 shrink-0" />
                         <span className="truncate">{selectedFarm.location}</span>
                       </div>
                       <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
-                        <span className="text-[9px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-800 px-2 py-0.5 rounded-full">
+                        <span className={`text-[9px] font-bold border px-2 py-0.5 rounded-full ${
+                          theme === 'light' ? 'bg-emerald-100 text-emerald-800 border-emerald-300' : 'bg-emerald-950 text-emerald-300 border-emerald-800'
+                        }`}>
                           {selectedFarm.crop}
                         </span>
-                        <span className="text-[9px] text-gray-300 bg-gray-900 border border-gray-700 px-2 py-0.5 rounded-full font-mono">
+                        <span className={`text-[9px] border px-2 py-0.5 rounded-full font-mono ${
+                          theme === 'light' ? 'bg-slate-100 text-slate-700 border-slate-300' : 'bg-gray-900 text-gray-300 border-gray-700'
+                        }`}>
                           {selectedFarm.farmSizeHectares} Ha
                         </span>
                       </div>
@@ -398,12 +419,18 @@ export const Topbar: React.FC<TopbarProps> = ({
                 {/* Other Farm Parcels (ONLY shown if other farms exist) */}
                 {farms.filter(f => f.id !== selectedFarmId).length > 0 && (
                   <div className="space-y-2">
-                    <span className="text-[10px] uppercase font-extrabold tracking-wider text-gray-400 px-1">Switch To Other Farm</span>
+                    <span className={`text-[10px] uppercase font-extrabold tracking-wider px-1 ${
+                      theme === 'light' ? 'text-slate-500' : 'text-gray-400'
+                    }`}>Switch To Other Farm</span>
                     <div className="space-y-1.5 max-h-48 overflow-y-auto pr-0.5">
                       {farms.filter(f => f.id !== selectedFarmId).map((f) => (
                         <div
                           key={f.id}
-                          className="w-full p-2 rounded-xl flex items-center justify-between transition-colors border bg-[#142018]/60 border-[#23362a] hover:bg-[#1a2b20] text-gray-300"
+                          className={`w-full p-2.5 rounded-xl flex items-center justify-between transition-colors border ${
+                            theme === 'light' 
+                              ? 'bg-slate-50 border-slate-200 text-slate-800 hover:bg-emerald-50/80 shadow-sm' 
+                              : 'bg-[#18261e] border-[#23362a] text-gray-300 hover:bg-[#1a2b20]'
+                          }`}
                         >
                           <button
                             onClick={() => {
@@ -415,11 +442,11 @@ export const Topbar: React.FC<TopbarProps> = ({
                             <img src={f.avatarUrl} alt={f.name} className="w-8 h-8 rounded-full object-cover border border-emerald-500/40 shrink-0" />
                             <div className="flex-1 text-xs min-w-0">
                               <div className="font-bold flex items-center justify-between">
-                                <span className="truncate">{f.name}</span>
-                                <span className="text-[9px] text-emerald-400 shrink-0 ml-1 font-mono">{f.farmSizeHectares} Ha</span>
+                                <span className={`truncate ${theme === 'light' ? 'text-slate-900 font-extrabold' : 'text-white'}`}>{f.name}</span>
+                                <span className="text-[10px] text-emerald-600 font-extrabold shrink-0 ml-1 font-mono">{f.farmSizeHectares} Ha</span>
                               </div>
-                              <div className="text-[10px] text-gray-400 truncate">{f.location}</div>
-                              <div className="text-[10px] text-emerald-300/80 font-medium truncate">{f.crop}</div>
+                              <div className={`text-[10px] truncate ${theme === 'light' ? 'text-slate-600 font-medium' : 'text-gray-400'}`}>{f.location}</div>
+                              <div className={`text-[10px] font-bold truncate ${theme === 'light' ? 'text-emerald-700' : 'text-emerald-300/80'}`}>{f.crop}</div>
                             </div>
                           </button>
 
@@ -430,7 +457,9 @@ export const Topbar: React.FC<TopbarProps> = ({
                                 setEditingFarm(f);
                                 setShowProfileDropdown(false);
                               }}
-                              className="p-1 text-gray-400 hover:text-emerald-400 rounded hover:bg-emerald-950/50"
+                              className={`p-1 rounded transition-colors ${
+                                theme === 'light' ? 'text-slate-600 hover:text-emerald-700 hover:bg-slate-200' : 'text-gray-400 hover:text-emerald-400 hover:bg-emerald-950/50'
+                              }`}
                               title="Edit Farm Profile & Photo"
                             >
                               <Edit2 className="w-3.5 h-3.5" />
@@ -441,7 +470,9 @@ export const Topbar: React.FC<TopbarProps> = ({
                                   e.stopPropagation();
                                   deleteExistingFarm(f.id);
                                 }}
-                                className="p-1 text-gray-400 hover:text-red-400 rounded hover:bg-red-950/50"
+                                className={`p-1 rounded transition-colors ${
+                                  theme === 'light' ? 'text-slate-600 hover:text-red-700 hover:bg-red-100' : 'text-gray-400 hover:text-red-400 hover:bg-red-950/50'
+                                }`}
                                 title="Delete Farm"
                               >
                                 <Trash2 className="w-3.5 h-3.5" />
@@ -455,7 +486,7 @@ export const Topbar: React.FC<TopbarProps> = ({
                 )}
 
                 {/* Logout Option Only */}
-                <div className="pt-1 border-t border-[#23362a]">
+                <div className={`pt-1 border-t ${theme === 'light' ? 'border-slate-200' : 'border-[#23362a]'}`}>
                   <button
                     onClick={() => {
                       setShowProfileDropdown(false);
@@ -463,13 +494,17 @@ export const Topbar: React.FC<TopbarProps> = ({
                       setAuthTab('login');
                       setIsAuthModalOpen(true);
                     }}
-                    className="w-full text-left px-3 py-2 rounded-xl text-red-300 bg-red-950/30 hover:bg-red-950/60 border border-red-800/40 flex items-center justify-between transition-colors font-bold"
+                    className={`w-full text-left px-3 py-2.5 rounded-xl border flex items-center justify-between transition-colors font-bold ${
+                      theme === 'light' 
+                        ? 'bg-red-50 hover:bg-red-100 border-red-200 text-red-700 shadow-sm' 
+                        : 'bg-red-950/40 hover:bg-red-900/60 border-red-800/40 text-red-400'
+                    }`}
                   >
                     <div className="flex items-center space-x-2">
-                      <LogOut className="w-4 h-4 text-red-400" />
-                      <span>Logout of Session</span>
+                      <LogOut className={`w-4 h-4 ${theme === 'light' ? 'text-red-600' : 'text-red-400'}`} />
+                      <span className={theme === 'light' ? 'text-red-700 font-extrabold' : 'text-red-400'}>Logout of Session</span>
                     </div>
-                    <span className="text-[10px] text-red-400">Exit &rarr;</span>
+                    <span className={`text-[10px] font-bold ${theme === 'light' ? 'text-red-600' : 'text-red-400'}`}>Exit &rarr;</span>
                   </button>
                 </div>
               </div>

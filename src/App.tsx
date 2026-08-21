@@ -79,16 +79,20 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
 }
 
 const AppContent: React.FC = () => {
-  const { currentView, isLoading } = useApp();
+  const { currentView, currentUser, isLoading, theme } = useApp();
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [isFarmerCameraOpen, setIsFarmerCameraOpen] = useState(false);
+
+  // View Guard: Prevent dashboard flash for unauthorized or unauthenticated sessions
+  const isProtectedView = currentView !== 'landing';
+  const isAuthorizedUser = currentUser !== null && currentUser.emailVerified !== false;
 
   const renderView = () => {
     if (isLoading) {
       return <PageSkeleton />;
     }
 
-    if (currentView === 'landing') {
+    if (currentView === 'landing' || (!isAuthorizedUser && isProtectedView)) {
       return <LandingPage />;
     }
 
@@ -111,12 +115,8 @@ const AppContent: React.FC = () => {
         return <CropAdvisor />;
       case 'disease':
         return <DiseaseDoctor />;
-      case 'regenerative':
-        return <RegenerativeAg />;
       case 'agrogpt':
         return <AgroGPT />;
-      case 'digital-twin':
-        return <DigitalTwin />;
       case 'brics-network':
         return <BRICSNetwork />;
       case 'authority':
@@ -132,9 +132,9 @@ const AppContent: React.FC = () => {
     }
   };
 
-  if (currentView === 'landing') {
+  if (currentView === 'landing' || (!isAuthorizedUser && isProtectedView)) {
     return (
-      <div className="min-h-screen bg-[#0a0f0d]">
+      <div className={`min-h-screen transition-colors ${theme === 'light' ? 'bg-[#f3f7f4] text-slate-900' : 'bg-[#0a0f0d] text-white'}`}>
         <LandingPage />
         <DemoBar />
       </div>
@@ -142,7 +142,9 @@ const AppContent: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0f0d] flex flex-col selection:bg-emerald-500 selection:text-white">
+    <div className={`min-h-screen flex flex-col selection:bg-emerald-500 selection:text-white transition-colors ${
+      theme === 'light' ? 'bg-[#f3f7f4] text-slate-900' : 'bg-[#0a0f0d] text-white'
+    }`}>
       <Topbar 
         onToggleMobileSidebar={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
         isMobileSidebarOpen={isMobileSidebarOpen}

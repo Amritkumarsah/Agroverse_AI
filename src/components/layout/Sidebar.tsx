@@ -49,14 +49,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen, onCloseMobile })
     { id: 'yield-forecast', label: t(language, 'yieldForecast', '🌾 Yield Forecast'), icon: <TrendingUp className="w-4 h-4 text-emerald-400" />, badge: 'AI Predict', category: 'dashboard' },
     { id: 'crop-economics', label: t(language, 'cropEconomics', '💰 Crop Economics'), icon: <DollarSign className="w-4 h-4 text-amber-400" />, badge: 'ROI Net', category: 'dashboard' },
     { id: 'data-consent', label: t(language, 'dataConsent', '🔐 My Data & Consent'), icon: <Lock className="w-4 h-4 text-teal-400" />, badge: 'FAIR DPG', category: 'dashboard' },
-    { id: 'digital-twin', label: t(language, 'digitalTwin', 'My Farms / Twin'), icon: <Box className="w-4 h-4" />, badge: '3 Zones', category: 'dashboard' },
     { id: 'satellite', label: t(language, 'satelliteIntel', 'Satellite Intelligence'), icon: <Satellite className="w-4 h-4" />, badge: `NDVI ${currentNdvi}`, category: 'dashboard' },
     { id: 'soil', label: t(language, 'soilHealth', 'Soil Health & Carbon'), icon: <FlaskConical className="w-4 h-4" />, category: 'dashboard' },
     { id: 'weather', label: t(language, 'weatherForecast', 'Weather & Impact'), icon: <CloudSun className="w-4 h-4" />, category: 'dashboard' },
     { id: 'advisor', label: t(language, 'cropAdvisor', 'Crop Advisor'), icon: <Wheat className="w-4 h-4" />, category: 'dashboard' },
     { id: 'disease', label: 'Disease AI Doctor', icon: <Bug className="w-4 h-4" />, badge: 'Vision AI', category: 'dashboard' },
     { id: 'agrogpt', label: t(language, 'aiAssistant', 'AI Assistant (AgroGPT)'), icon: <Bot className="w-4 h-4" />, category: 'dashboard' },
-    { id: 'regenerative', label: t(language, 'regenerativeAg', 'Regenerative Farming'), icon: <Leaf className="w-4 h-4" />, category: 'dashboard' },
     { id: 'alerts', label: t(language, 'alerts', 'Alert Center'), icon: <Bell className="w-4 h-4" />, badge: unreadAlerts > 0 ? `${unreadAlerts} New` : undefined, category: 'dashboard' },
   ];
 
@@ -76,20 +74,22 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen, onCloseMobile })
               setCurrentView(item.id);
               if (onCloseMobile) onCloseMobile();
             }}
-            className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-all ${
+            className={`w-full flex items-center justify-between text-left px-3 py-2.5 rounded-xl text-xs transition-all ${
               isActive 
-                ? 'bg-gradient-to-r from-emerald-700/80 to-teal-800/80 text-white shadow-md shadow-emerald-950/60 border border-emerald-500/50 font-semibold' 
-                : 'text-gray-300 hover:bg-[#131e17] hover:text-emerald-400'
+                ? 'bg-gradient-to-r from-emerald-700/80 to-teal-800/80 text-white shadow-md shadow-emerald-950/60 border border-emerald-500/50 font-bold' 
+                : 'text-gray-300 hover:bg-[#131e17] hover:text-emerald-400 font-medium'
             }`}
           >
-            <div className="flex items-center space-x-2.5">
-              <span className={isActive ? 'text-white' : item.category === 'global' ? 'text-amber-500' : 'text-emerald-500'}>
+            <div className="flex items-start space-x-2.5 text-left flex-1 min-w-0 pr-1">
+              <span className={`shrink-0 mt-0.5 ${isActive ? 'text-white' : item.category === 'global' ? 'text-amber-500' : 'text-emerald-500'}`}>
                 {item.icon}
               </span>
-              <span>{item.label}</span>
+              <div className="flex-1 min-w-0 text-left">
+                <span className="block text-left text-[11px] font-semibold leading-tight break-words">{item.label}</span>
+              </div>
             </div>
             {item.badge && (
-              <span className={`text-[9px] px-1.5 py-0.5 rounded font-bold ${
+              <span className={`text-[9px] px-1.5 py-0.5 rounded font-bold shrink-0 ml-1.5 text-center ${
                 item.badge.includes('New') 
                   ? 'bg-red-500 text-white animate-pulse' 
                   : isActive 

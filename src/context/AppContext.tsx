@@ -20,6 +20,9 @@ import { soilService } from '../services/soilService';
 import { remoteSensingService } from '../services/remoteSensingService';
 import { networkService } from '../services/networkService';
 import { weatherService } from '../services/weatherService';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../config/firebase';
+import { firebaseService, UserProfileData } from '../services/firebaseService';
 
 interface ToastState {
   message: string;
@@ -72,7 +75,11 @@ interface AppContextType {
   theme: 'dark' | 'light';
   setTheme: (theme: 'dark' | 'light') => void;
   toggleTheme: () => void;
+  currentUser: UserProfileData | null;
+  setCurrentUser: React.Dispatch<React.SetStateAction<UserProfileData | null>>;
   logout: () => void;
+  resendVerificationEmail: () => Promise<void>;
+  checkEmailVerification: () => Promise<boolean>;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -140,10 +147,69 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   }, [theme]);
 
-  const logout = () => {
+  // Firebase User State & Auth Listener
+  const [currentUser, setCurrentUser] = useState<UserProfileData | null>(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (fbUser) => {
+      if (fbUser) {
+        // Fetch profile from Firestore if available
+        const profile = await firebaseService.getUserProfile(fbUser, role);
+        if (profile) {
+          setCurrentUser(profile);
+          if (profile.role) {
+            setRole(profile.role);
+          }
+        } else {
+          // Fallback basic user profile for newly created or active Firebase user
+          setCurrentUser({
+            uid: fbUser.uid,
+            email: fbUser.email,
+            displayName: fbUser.displayName || fbUser.email?.split('@')[0] || 'AgriUser',
+            photoURL: fbUser.photoURL,
+            role: role || 'farmer',
+            createdAt: new Date().toISOString(),
+            emailVerified: fbUser.emailVerified
+          });
+        }
+      } else {
+        setCurrentUser(null);
+      }
+    });
+
+    // Sync persistent farms from Firestore on load
+    firebaseService.getFarmsFromFirestore().then((firestoreFarms) => {
+      if (firestoreFarms && firestoreFarms.length > 0) {
+        setFarms(firestoreFarms);
+      }
+    }).catch(e => console.warn('Firestore initial sync note:', e));
+
+    return () => unsubscribe();
+  }, [role]);
+
+  const logout = async () => {
+    try {
+      await firebaseService.logout();
+    } catch (e) {
+      console.warn('Firebase logout notice:', e);
+    }
+    setCurrentUser(null);
     setCurrentView('landing');
     setRole('farmer');
     showToast('Logged out successfully. Returned to AGROVERSE AI Landing Page.', 'success');
+  };
+
+  const resendVerificationEmail = async () => {
+    await firebaseService.resendVerificationEmail();
+    showToast('Verification link sent to your Gmail inbox!', 'success');
+  };
+
+  const checkEmailVerification = async () => {
+    const isVerified = await firebaseService.checkEmailVerified();
+    if (currentUser) {
+      setCurrentUser(prev => prev ? { ...prev, emailVerified: isVerified } : null);
+    }
+    return isVerified;
   };
 
   // Farmer Consent State with LocalStorage Persistence
@@ -439,6 +505,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     FARM_DATA_MAP[newId] = newFullData;
     setFarms(prev => [newFarmerProfile, ...prev]);
     setSelectedFarmId(newId);
+
+    // Save to Firebase Firestore
+    firebaseService.saveFarmToFirestore(newFarmerProfile);
+
     showToast(`Created new farm parcel for ${farmData.farmer} (${farmData.location})`, 'success');
   };
 
@@ -446,9 +516,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const lat = farmData.latitude;
     const lng = farmData.longitude;
 
+    let updatedProfile: FarmerProfile | null = null;
     setFarms(prev => prev.map(f => {
       if (f.id === id) {
-        return {
+        updatedProfile = {
           ...f,
           name: farmData.farmer,
           location: farmData.location,
@@ -462,9 +533,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             [lat, lng + 0.003]
           ]
         };
+        return updatedProfile;
       }
       return f;
     }));
+
+    if (updatedProfile) {
+      firebaseService.saveFarmToFirestore(updatedProfile);
+    }
 
     if (FARM_DATA_MAP[id]) {
       FARM_DATA_MAP[id].farmer.name = farmData.farmer;
@@ -493,6 +569,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const updatedFarms = farms.filter(f => f.id !== id);
     setFarms(updatedFarms);
     delete FARM_DATA_MAP[id];
+
+    // Delete from Firestore
+    firebaseService.deleteFarmFromFirestore(id);
 
     if (id === selectedFarmId) {
       const remaining = updatedFarms[0];
@@ -613,7 +692,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         theme,
         setTheme,
         toggleTheme,
-        logout
+        currentUser,
+        setCurrentUser,
+        logout,
+        resendVerificationEmail,
+        checkEmailVerification
       }}
     >
       {children}

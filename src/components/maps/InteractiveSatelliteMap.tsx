@@ -15,7 +15,7 @@ export const InteractiveSatelliteMap: React.FC<Props> = ({
   activeLayerOverride,
   onZoneSelect 
 }) => {
-  const { selectedFarm } = useApp();
+  const { selectedFarm, theme } = useApp();
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<any>(null);
   const polygonRef = useRef<any>(null);
@@ -54,8 +54,12 @@ export const InteractiveSatelliteMap: React.FC<Props> = ({
         attributionControl: false
       });
 
-      // Dark tiles for sleek DPI map style
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      // Dynamic Light/Dark map tiles based on app theme
+      const tileUrl = theme === 'light'
+        ? 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
+        : 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+
+      L.tileLayer(tileUrl, {
         maxZoom: 19
       }).addTo(map);
 
@@ -121,7 +125,7 @@ export const InteractiveSatelliteMap: React.FC<Props> = ({
     }
 
     polygonRef.current = polygonGroup;
-  }, [selectedFarm, observation, activeLayer]);
+  }, [selectedFarm, observation, activeLayer, theme]);
 
   return (
     <div className="relative w-full h-[450px] lg:h-[500px] rounded-2xl overflow-hidden border border-[#23362a] shadow-2xl bg-[#09100c]">

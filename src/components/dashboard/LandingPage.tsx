@@ -23,7 +23,7 @@ import {
 } from 'lucide-react';
 
 export const LandingPage: React.FC = () => {
-  const { setCurrentView, setDemoMode, setDemoStep } = useApp();
+  const { setCurrentView, setDemoMode, setDemoStep, theme } = useApp();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [authTab, setAuthTab] = useState<'login' | 'signup'>('login');
 
@@ -46,7 +46,9 @@ export const LandingPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0f0d] text-white selection:bg-emerald-500 selection:text-white">
+    <div className={`min-h-screen transition-colors selection:bg-emerald-500 selection:text-white ${
+      theme === 'light' ? 'bg-[#f3f7f4] text-slate-900' : 'bg-[#0a0f0d] text-white'
+    }`}>
       {/* Top Navigation Bar */}
       <header className="sticky top-0 z-40 backdrop-blur-xl bg-[#0a0f0d]/90 border-b border-[#18261e] px-4 lg:px-12 py-3.5 shadow-lg">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
@@ -209,13 +211,19 @@ export const LandingPage: React.FC = () => {
       </section>
 
       {/* Footer */}
-      <footer className="py-8 border-t border-[#1e2e23] text-center text-xs text-gray-500 bg-[#070b09]">
+      <footer className={`py-8 border-t text-center text-xs transition-colors ${
+        theme === 'light' 
+          ? 'bg-slate-100 border-slate-200 text-slate-600' 
+          : 'bg-[#070b09] border-[#1e2e23] text-gray-400'
+      }`}>
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center space-x-2">
-            <span className="font-bold text-gray-300">AGROVERSE AI</span>
-            <span>• Digital Public Infrastructure (DPI)</span>
+            <span className={`font-bold ${theme === 'light' ? 'text-slate-900 font-extrabold' : 'text-gray-200'}`}>AGROVERSE AI</span>
+            <span className={theme === 'light' ? 'text-slate-600 font-medium' : 'text-gray-400'}>• Digital Public Infrastructure (DPI)</span>
           </div>
-          <div>Inspired by BRICS Agricultural Cooperation • Prototype Simulation</div>
+          <div className={theme === 'light' ? 'text-slate-500 font-medium' : 'text-gray-400'}>
+            Inspired by BRICS Agricultural Cooperation • Prototype Simulation
+          </div>
         </div>
       </footer>
 

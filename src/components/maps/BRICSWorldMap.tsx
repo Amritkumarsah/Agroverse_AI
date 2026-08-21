@@ -4,11 +4,14 @@ import { BRICSCountry } from '../../types';
 import { BRICS_COUNTRIES } from '../../data/demoData';
 import { Globe, Cpu, Database } from 'lucide-react';
 
+import { useApp } from '../../context/AppContext';
+
 interface Props {
   onCountrySelect?: (country: BRICSCountry) => void;
 }
 
 export const BRICSWorldMap: React.FC<Props> = ({ onCountrySelect }) => {
+  const { theme } = useApp();
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<any>(null);
   const [selectedCountry, setSelectedCountry] = useState<BRICSCountry>(BRICS_COUNTRIES[0]); // India
@@ -35,7 +38,11 @@ export const BRICSWorldMap: React.FC<Props> = ({ onCountrySelect }) => {
         attributionControl: false
       });
 
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      const tileUrl = theme === 'light'
+        ? 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
+        : 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+
+      L.tileLayer(tileUrl, {
         maxZoom: 6,
         minZoom: 2
       }).addTo(map);

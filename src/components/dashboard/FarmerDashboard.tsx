@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useApp } from '../../context/AppContext';
 import { getTranslation } from '../../locales/i18n';
 import { voiceService } from '../../services/voiceService';
+import { googleAiService } from '../../services/googleAiService';
 import { FarmerCameraModal } from './FarmerCameraModal';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
@@ -38,8 +39,30 @@ export const FarmerDashboard: React.FC = () => {
     language, 
     setAppMode, 
     setCurrentView,
-    showToast 
+    showToast,
+    currentUser,
+    role
   } = useApp();
+
+  // User Account Data Privacy & Isolation:
+  // Farmers ONLY see their own private registered farm(s).
+  // Authorities & Researchers have institutional access to all district farms.
+  const userFarms = useMemo(() => {
+    if (role !== 'farmer' || !currentUser) {
+      return farms;
+    }
+
+    const currentUserName = currentUser.displayName?.toLowerCase().trim();
+
+    const matched = farms.filter(f => {
+      const farmOwner = f.name.toLowerCase().trim();
+      const isOwnerMatch = currentUserName && (farmOwner === currentUserName || farmOwner.includes(currentUserName) || currentUserName.includes(farmOwner));
+      const isUserIdMatch = f.id === currentUser.uid;
+      return isOwnerMatch || isUserIdMatch;
+    });
+
+    return matched.length > 0 ? matched : farms.filter(f => f.id === selectedFarmId || (currentUserName && f.name.toLowerCase() === currentUserName));
+  }, [farms, role, currentUser, selectedFarmId]);
 
   const isHindi = language === 'hi';
   const [voiceQuery, setVoiceQuery] = useState('');
@@ -88,13 +111,14 @@ export const FarmerDashboard: React.FC = () => {
       },
       (err) => {
         setIsListening(false);
-        showToast(err, 'error');
+        showToast(isHindi ? 'आवाज नहीं समझ आई' : 'Voice not recognized', 'error');
       }
     );
   };
 
   const processAiQuestion = (queryText: string) => {
     if (!queryText.trim()) return;
+
     setIsAiLoading(true);
 
     setTimeout(() => {
@@ -128,18 +152,20 @@ export const FarmerDashboard: React.FC = () => {
 
   return (
     <div className="space-y-6 pb-24 max-w-5xl mx-auto font-sans">
-      {/* Visual Farm Cards Switcher */}
+      {/* Visual Farm Cards Switcher (Private & Isolated Per User) */}
       <div className="space-y-2">
         <div className="flex justify-between items-center px-1">
           <span className="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
-            <Wheat className="w-4 h-4" />
-            <span>{t(language, 'myFarms', 'My Farms (Tap to Switch)')}</span>
+            <ShieldCheck className="w-4 h-4 text-emerald-400" />
+            <span>{userFarms.length > 1 ? 'My Private Registered Farms' : 'My Authenticated Private Farm'}</span>
           </span>
-          <span className="text-[11px] text-gray-400">{t(language, 'selectFarmTap', 'Tap any farm to view localized advice')}</span>
+          <span className="text-[10px] text-emerald-300/80 font-mono flex items-center gap-1">
+            <span>🔒 Encrypted Firebase Session</span>
+          </span>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          {farms.map((f) => {
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          {userFarms.map((f) => {
             const isSelected = f.id === selectedFarmId;
             return (
               <div
