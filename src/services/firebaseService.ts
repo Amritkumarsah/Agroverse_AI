@@ -23,6 +23,7 @@ import {
 } from 'firebase/firestore';
 import { auth, googleProvider, db } from '../config/firebase';
 import { FarmerProfile, UserRole } from '../types';
+import { googleAuthEngine } from './googleAuthEngine';
 
 export interface UserProfileData {
   uid: string;
@@ -157,81 +158,7 @@ export class FirebaseService {
    * Authentication != Authorization: Unregistered Google accounts are REJECTED and signed out.
    */
   async signInWithGoogle(role: UserRole = 'farmer'): Promise<UserProfileData> {
-    console.log('[AUTH DEBUG] Triggering Firebase signInWithPopup(auth, googleProvider)...');
-    googleProvider.setCustomParameters({ prompt: 'select_account' });
-    
-    let user: FirebaseUser | null = null;
-    try {
-      const result = await signInWithPopup(auth, googleProvider);
-      user = result.user;
-      console.log('[AUTH DEBUG] Real Firebase Google Auth Success for UID:', user.uid, user.email);
-    } catch (err: any) {
-      console.warn('[AUTH DEBUG] Firebase Google Popup Note:', err?.code || err?.message);
-      if (err?.code === 'auth/popup-closed-by-user') {
-        throw err;
-      }
-      // Provision verified Google user profile when popup is blocked or domain unauthorized
-      return {
-        uid: `google-user-${Date.now()}`,
-        email: 'sahamrit3333@gmail.com',
-        displayName: 'Amrit Kumar Sah (Google)',
-        photoURL: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200',
-        role: role || 'farmer',
-        createdAt: new Date().toISOString(),
-        emailVerified: true
-      };
-    }
-
-    // Lookup existing profile or auto-provision profile in Cloud Firestore
-    let profileData: UserProfileData | null = null;
-    if (user) {
-      try {
-        const userDocRef = doc(db, 'users', user.uid);
-        const docSnap = await getDoc(userDocRef);
-
-        if (docSnap.exists()) {
-          profileData = docSnap.data() as UserProfileData;
-          profileData.role = role || profileData.role || 'farmer';
-          profileData.emailVerified = true;
-          try {
-            await setDoc(userDocRef, { role: profileData.role, emailVerified: true }, { merge: true });
-          } catch (e) {}
-        } else {
-          profileData = {
-            uid: user.uid,
-            email: user.email,
-            displayName: user.displayName || user.email?.split('@')[0] || 'Google User',
-            photoURL: user.photoURL || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200',
-            role: role || 'farmer',
-            createdAt: new Date().toISOString(),
-            emailVerified: true
-          };
-          try {
-            await setDoc(userDocRef, profileData, { merge: true });
-          } catch (e) {}
-        }
-      } catch (e) {
-        profileData = {
-          uid: user.uid,
-          email: user.email,
-          displayName: user.displayName || user.email?.split('@')[0] || 'Google User',
-          photoURL: user.photoURL || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200',
-          role: role || 'farmer',
-          createdAt: new Date().toISOString(),
-          emailVerified: true
-        };
-      }
-    }
-
-    return profileData || {
-      uid: `google-user-${Date.now()}`,
-      email: 'sahamrit3333@gmail.com',
-      displayName: 'Amrit Kumar Sah (Google)',
-      photoURL: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200',
-      role: role || 'farmer',
-      createdAt: new Date().toISOString(),
-      emailVerified: true
-    };
+    return await googleAuthEngine.signInWithGoogle(role);
   }
 
   /**
