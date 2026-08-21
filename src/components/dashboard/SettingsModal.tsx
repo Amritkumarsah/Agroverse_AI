@@ -125,54 +125,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
           </div>
         </div>
 
-        {/* 2. System Role Switcher */}
-        <div className="space-y-3">
-          <div className="font-extrabold text-white text-xs uppercase tracking-wider flex items-center gap-2 border-b border-[#23362a] pb-1.5">
-            <User className="w-4 h-4 text-teal-400" />
-            <span>Switch System Persona / Role</span>
-          </div>
 
-          <div className="grid grid-cols-3 gap-2">
-            <button
-              onClick={() => { setRole('farmer'); showToast('Switched to Farmer Persona', 'info'); }}
-              className={`p-3 rounded-2xl border text-center transition-all ${
-                role === 'farmer' 
-                  ? 'bg-emerald-950/80 border-emerald-500 text-emerald-300 font-bold shadow-lg' 
-                  : 'bg-[#18261e] border-[#294233] text-gray-300 hover:border-emerald-500/40'
-              }`}
-            >
-              <div className="text-base mb-1">👨🌾</div>
-              <div className="font-extrabold">Farmer</div>
-              <div className="text-[10px] text-gray-400 mt-0.5">Advisory Focus</div>
-            </button>
 
-            <button
-              onClick={() => { setRole('authority'); showToast('Switched to Authority Persona', 'info'); }}
-              className={`p-3 rounded-2xl border text-center transition-all ${
-                role === 'authority' 
-                  ? 'bg-emerald-950/80 border-emerald-500 text-emerald-300 font-bold shadow-lg' 
-                  : 'bg-[#18261e] border-[#294233] text-gray-300 hover:border-emerald-500/40'
-              }`}
-            >
-              <div className="text-base mb-1">🏛️</div>
-              <div className="font-extrabold">Authority</div>
-              <div className="text-[10px] text-gray-400 mt-0.5">District Analytics</div>
-            </button>
-
-            <button
-              onClick={() => { setRole('researcher'); showToast('Switched to Researcher Persona', 'info'); }}
-              className={`p-3 rounded-2xl border text-center transition-all ${
-                role === 'researcher' 
-                  ? 'bg-emerald-950/80 border-emerald-500 text-emerald-300 font-bold shadow-lg' 
-                  : 'bg-[#18261e] border-[#294233] text-gray-300 hover:border-emerald-500/40'
-              }`}
-            >
-              <div className="text-base mb-1">🔬</div>
-              <div className="font-extrabold">Researcher</div>
-              <div className="text-[10px] text-gray-400 mt-0.5">BRICS Models</div>
-            </button>
-          </div>
-        </div>
 
         {/* 3. Language & Privacy Link */}
         <div className="space-y-3">
