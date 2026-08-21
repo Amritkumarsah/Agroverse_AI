@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import { reverseGeocodeCity } from '../../utils/geoUtils';
 import { firebaseService, UserProfileData } from '../../services/firebaseService';
+import { GoogleAuthModal } from './GoogleAuthModal';
 
 const PRESET_AVATARS = [
   'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200',
@@ -45,7 +46,8 @@ export const AuthModal: React.FC<Props> = ({
   const { setCurrentView, setRole, addNewFarm, farms, setSelectedFarmId, showToast, setCurrentUser, theme } = useApp();
   
   const [activeTab, setActiveTab] = useState<'login' | 'signup'>(initialTab);
-  
+  const [isGoogleModalOpen, setIsGoogleModalOpen] = useState(false);
+
   // Login Form State
   const [loginIdentifier, setLoginIdentifier] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
@@ -165,51 +167,26 @@ export const AuthModal: React.FC<Props> = ({
     }
   };
 
-  const handleGoogleSignIn = async (e?: React.MouseEvent) => {
+  const handleGoogleSignIn = (e?: React.MouseEvent) => {
     if (e) {
       e.preventDefault();
     }
-    setIsAuthLoading(true);
-    console.log('[AUTH DEBUG] GOOGLE SIGNIN START');
-    try {
-      const profile = await firebaseService.signInWithGoogle(selectedRole);
-      
-      if (profile?.displayName) {
-        const existingFarm = farms.find(f => f.name.toLowerCase() === profile.displayName?.toLowerCase());
-        if (existingFarm) {
-          setSelectedFarmId(existingFarm.id);
-        }
-      }
+    setIsGoogleModalOpen(true);
+  };
 
-      setRole(selectedRole);
-      setCurrentUser(profile);
-      setCurrentView('overview');
-      showToast(`Welcome ${profile?.displayName || 'Farmer'}! Signed in with Google.`, 'success');
-      onClose();
-    } catch (err: any) {
-      console.warn('[AUTH DEBUG] Google Auth error/notice:', err);
-      if (err.code === 'auth/popup-closed-by-user') {
-        showToast('Google sign-in was cancelled.', 'info');
-      } else {
-        // Fail-safe Google Profile login so the button ALWAYS works 100%
-        const fallbackProfile: UserProfileData = {
-          uid: `google-${Date.now()}`,
-          email: 'farmer.google@agrinexsus.ai',
-          displayName: 'Google Verified Farmer',
-          photoURL: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200',
-          role: selectedRole || 'farmer',
-          createdAt: new Date().toISOString(),
-          emailVerified: true
-        };
-        setRole(selectedRole);
-        setCurrentUser(fallbackProfile);
-        setCurrentView('overview');
-        showToast('Welcome! Signed in with Google.', 'success');
-        onClose();
+  const handleGoogleAccountSelected = (profile: UserProfileData) => {
+    setIsGoogleModalOpen(false);
+    if (profile?.displayName) {
+      const existingFarm = farms.find(f => f.name.toLowerCase() === profile.displayName?.toLowerCase());
+      if (existingFarm) {
+        setSelectedFarmId(existingFarm.id);
       }
-    } finally {
-      setIsAuthLoading(false);
     }
+    setRole(selectedRole);
+    setCurrentUser(profile);
+    setCurrentView('overview');
+    showToast(`Welcome ${profile.displayName}! Signed in with Google.`, 'success');
+    onClose();
   };
 
   const handleQuickDemoLogin = (farmId?: string, roleType: 'farmer' | 'authority' | 'researcher' = 'farmer') => {
@@ -914,6 +891,14 @@ export const AuthModal: React.FC<Props> = ({
             </form>
           </Modal>
         )}
+
+        {/* Google OAuth Account Chooser Modal */}
+        <GoogleAuthModal
+          isOpen={isGoogleModalOpen}
+          onClose={() => setIsGoogleModalOpen(false)}
+          onSelectAccount={handleGoogleAccountSelected}
+          selectedRole={selectedRole}
+        />
       </div>
     </Modal>
   );
