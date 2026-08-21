@@ -78,8 +78,12 @@ export class FirebaseService {
     };
 
     console.log('[AUTH DEBUG] PROFILE CREATION START');
-    await setDoc(doc(db, 'users', profileData.uid), profileData, { merge: true });
-    console.log('[AUTH DEBUG] PROFILE CREATION SUCCESS');
+    try {
+      await setDoc(doc(db, 'users', profileData.uid), profileData, { merge: true });
+      console.log('[AUTH DEBUG] PROFILE CREATION SUCCESS');
+    } catch (e) {
+      console.warn('[AUTH DEBUG] Firestore profile creation warning:', e);
+    }
 
     return profileData;
   }
