@@ -20,19 +20,7 @@
 
 </div>
 
-## 🏆 Judge's Quick Evaluation Matrix
 
-> **Evaluator's Note:** Short on time? Here is how **AGROVERSE AI** addresses every core judging criterion:
-
-| Judging Criterion | How AGROVERSE AI Solves & Wins | Key Module / Metric |
-| :--- | :--- | :--- |
-| **💡 Innovation & Originality** | Replaces expensive $1,000+ IoT hardware with **100% remote sensing** (Sentinel-2 + Open-Meteo) & Multimodal Generative AI. | [Section 6](#6-hardware-independence--remote-sensing) |
-| **🤖 AI Technical Depth** | **Google Gemini 1.5 Flash** integrated with Computer Vision leaf diagnosis, XAI (Explainable AI), and a zero-downtime offline fallback engine. | [Section 5](#5-ai-decision-engine--google-gemini-integration) |
-| **🌐 DPI & Interoperability** | Implements the **BRICS Common Agriculture Data Schema (JSON-LD v2.4)** for cross-border AI model exchange across 5 nations. | [Section 7](#7-brics-common-agriculture-data-schema-json-ld-v24) |
-| **🌍 Real-World Impact** | Accessible to 500M+ smallholders via **Voice-First multilingual AgroGPT** and dual Farmer/Authority dashboards. | [Section 4](#4-key-features--module-catalog) |
-| **✨ UI/UX & Production Quality** | Glassmorphism Dark/Light themes, 3D Plot Digital Twins, real-time GPS Geolocation, and sub-second rendering. | [Section 8](#8-tech-stack--architecture-blueprint) |
-
----
 
 ## 📌 Table of Contents
 
@@ -430,33 +418,9 @@ Use these quick options or test accounts to explore the full platform:
 | :--- | :--- | :--- | :--- |
 | ⚡ **Instant Demo 1** | *Click "Rajesh Kumar"* | *No password required* | Muzaffarpur, Bihar (Wheat HD-2967) with full Satellite NDVI & Disease Doctor telemetry. |
 | ⚡ **Instant Demo 2** | *Click "Amrit Kumar Sah"* | *No password required* | Sriperumbudur, Tamil Nadu with live weather radar, 3D Digital Twin, and 7-Day Checklist. |
-| 🏛️ **Authority View** | Topbar Role -> Authority | — | National Crop Risk Monitor tracking **128,420+ farms** across regional sectors. |
-| 🔬 **Researcher View**| Topbar Role -> Researcher | — | BRICS JSON-LD v2.4 Model Exchange and Climate Scenario Simulation engine. |
 
----
 
-## 13. 3-Minute Winning Demo Walkthrough Script
 
-Follow this step-by-step presentation script when showcasing **AGROVERSE AI** to judges or evaluators:
-
-1. **0:00 - 0:30 (Farmer Overview & DPI Philosophy)**:
-   * Open the app and click **Instant Demo Access**.
-   * Highlight the **Hardware-Independent DPI Philosophy**: No costly IoT soil probes required.
-   * Point out the aggregate **Farm Health Score (72/100)** computed dynamically across 5 real-time indices.
-2. **0:30 - 1:00 (Sentinel-2 Satellite & Weather Radar)**:
-   * Navigate to **Satellite Intel**. Toggle Sentinel-2 NDVI overlay. Highlight **Zone B** showing early canopy stress ($NDVI = 0.43$).
-   * Click **Weather Intel**. Show live Open-Meteo telemetry turning rain probability (78%) into actionable advice: *"Postpone irrigation — 45mm rain expected."*
-3. **1:00 - 1:30 (AI Disease Doctor & Voice AgroGPT)**:
-   * Open **Disease Doctor**. Upload a sample leaf photo. Highlight instantaneous Computer Vision classification: **Wheat Rust (91% confidence)** with dual organic and chemical remedy protocols.
-   * Open **AgroGPT**. Speak or type a question in Hindi or English: *"When should I harvest my wheat crop?"* Observe the **Google Gemini 1.5 Flash** advisory with XAI reasoning.
-4. **1:30 - 2:15 (Yield Analytics & Climate Simulator)**:
-   * Open **Yield Forecast**. Show multi-variable yield estimation (4.2 Tons/Ha) and net profit projections.
-   * Click **Climate Simulator**. Adjust temperature delta to $+2^\circ\text{C}$ and demonstrate yield stress modeling.
-5. **2:15 - 3:00 (National Authority & BRICS Exchange)**:
-   * Switch role to **Authority Mode**. Demonstrate the **National Crop Risk Monitor** tracking **128,420 farms** and regional disaster heatmaps.
-   * Navigate to **BRICS Network**. Trigger cross-border model sharing from India $\rightarrow$ Brazil using the **JSON-LD v2.4 Schema**.
-
----
 
 ## 14. Digital Public Good (DPG) & UN SDG Alignment
 
